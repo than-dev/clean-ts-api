@@ -23,6 +23,7 @@
   },
   "dependencies": {},
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:staged": "jest"
   }
 }
