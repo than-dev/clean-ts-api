@@ -11,6 +11,15 @@
         ],
         "@typescript-eslint/space-before-function-paren": [
             "off"
+        ],
+        "@typescript-eslint/indent": [
+            "off"
+        ],
+        "no-trailing-spaces": [
+            "error",
+            {
+                "skipBlankLines": true
+            }
         ]
     }
 }
