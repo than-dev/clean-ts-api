@@ -20,6 +20,7 @@
             {
                 "skipBlankLines": true
             }
-        ]
+        ],
+        "@typescript-eslint/strict-boolean-expressions": "off"
     }
 }
