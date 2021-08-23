@@ -8,6 +8,7 @@
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@types/node": "^16.6.1",
+    "@types/validator": "^13.6.3",
     "@typescript-eslint/eslint-plugin": "4",
     "eslint": "7",
     "eslint-config-standard-with-typescript": "^20.0.0",
@@ -21,8 +22,10 @@
     "ts-jest": "^27.0.5",
     "typescript": "^4.3.5"
   },
-  "dependencies": {},
-  "scripts": { 
+  "dependencies": {
+    "validator": "^13.6.0"
+  },
+  "scripts": {
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests",
     "test:unit": "yarn test --watch -c jest-unit-config.js",
