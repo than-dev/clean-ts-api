@@ -4,19 +4,13 @@ import { BcryptAdapter } from './bcrypt-adapter';
 const salt = 12;
 
 jest.mock('bcrypt', () => ({
-    async hash(): Promise<string> {
+    async hash(): Promise<string | Error> {
         return new Promise((resolve) => resolve('hash'));
     }
 }));
 
-// const makeBcryptAdapter = () => {
-
-// }
-
 const makeSut = (): BcryptAdapter => {
-    const sut = new BcryptAdapter(salt);
-
-    return sut;
+    return new BcryptAdapter(salt);
 };
 
 describe('DbAddAccount Usecase', () => {
@@ -33,5 +27,16 @@ describe('DbAddAccount Usecase', () => {
 
         const hash = await sut.encrypt('any_value');
         expect(hash).toBe('hash');
+    });
+
+    it('should throw if bcrypt throws', async () => {
+        const sut = makeSut();
+        jest.spyOn(bcrypt, 'hash').mockReturnValueOnce(
+            // eslint-disable-next-line promise/param-names
+            new Promise((_resolve, reject) => reject(new Error()))
+        );
+
+        const promise = sut.encrypt('any_value');
+        await expect(promise).rejects.toThrow();
     });
 });
