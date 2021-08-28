@@ -6,6 +6,7 @@ module.exports = {
   transform: {
     '.+\\.ts$': 'ts-jest'
   },
+  preset: '@shelf/mongodb',
   coveragePathIgnorePatterns: [
     'node_modules',
     'protocols'
