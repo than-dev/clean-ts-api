@@ -1,3 +1,4 @@
+import { InsertOneResult } from 'mongodb';
 import { AccountModel } from '../models/account';
 
 export interface AddAccountModel {
@@ -7,5 +8,7 @@ export interface AddAccountModel {
 }
 
 export interface AddAccount {
-    add(account: AddAccountModel): Promise<AccountModel>;
+    add(
+        account: AddAccountModel
+    ): Promise<AccountModel | InsertOneResult<Document>>;
 }
