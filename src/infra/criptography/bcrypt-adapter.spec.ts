@@ -32,8 +32,7 @@ describe('DbAddAccount Usecase', () => {
     it('should throw if bcrypt throws', async () => {
         const sut = makeSut();
         jest.spyOn(bcrypt, 'hash').mockReturnValueOnce(
-            // eslint-disable-next-line promise/param-names
-            new Promise((_resolve, reject) => reject(new Error()))
+            new Promise((resolve, reject) => reject(new Error()))
         );
 
         const promise = sut.encrypt('any_value');
