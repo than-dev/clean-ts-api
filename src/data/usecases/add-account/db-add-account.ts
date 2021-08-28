@@ -1,3 +1,4 @@
+import { InsertOneResult } from 'mongodb';
 import {
     AddAccount,
     AddAccountModel,
@@ -18,7 +19,9 @@ export class DbAddAccount implements AddAccount {
         this.addAccountRepository = addAccountRepository;
     }
 
-    async add(accountData: AddAccountModel): Promise<AccountModel> {
+    async add(
+        accountData: AddAccountModel
+    ): Promise<AccountModel | InsertOneResult<Document>> {
         const hashedPassword = await this.encrypter.encrypt(
             accountData.password
         );
