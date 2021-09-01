@@ -36,7 +36,7 @@ describe('Login Controller', () => {
             }
         };
         const httpResponse = await sut.handle(httpRequest);
-        expect(httpResponse).toBe(
+        expect(httpResponse).toEqual(
             badRequest(new MissingParamError('password'))
         );
     });
