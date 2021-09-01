@@ -3,7 +3,8 @@ import {
     EmailValidator,
     AccountModel,
     AddAccountModel,
-    AddAccount
+    AddAccount,
+    Validation
 } from './signup-protocols';
 import {
     MissingParamError,
@@ -17,6 +18,7 @@ interface SutTypes {
     sut: SignUpController;
     emailValidatorStub: EmailValidator;
     addAccountStub: AddAccount;
+    validationStub: Validation;
 }
 
 const makeFakeAccount = (): AccountModel => ({
@@ -45,6 +47,16 @@ const makeEmailValidator = (): EmailValidator => {
     return new EmailValidatorStub();
 };
 
+const makeValidation = (): Validation => {
+    class ValidationStub implements Validation {
+        validate(input: any): Error {
+            return new Error();
+        }
+    }
+
+    return new ValidationStub();
+};
+
 const makeAddAccount = (): AddAccount => {
     class AddAccountStub implements AddAccount {
         async add(account: AddAccountModel): Promise<AccountModel> {
@@ -58,12 +70,18 @@ const makeAddAccount = (): AddAccount => {
 const makeSut = (): SutTypes => {
     const emailValidatorStub = makeEmailValidator();
     const addAccountStub = makeAddAccount();
-    const sut = new SignUpController(emailValidatorStub, addAccountStub);
+    const validationStub = makeValidation();
+    const sut = new SignUpController(
+        emailValidatorStub,
+        addAccountStub,
+        validationStub
+    );
 
     return {
         sut,
         emailValidatorStub,
-        addAccountStub
+        addAccountStub,
+        validationStub
     };
 };
 
@@ -213,6 +231,16 @@ describe('SignUp Controller', () => {
         const httpResponse = await sut.handle(makeFakeRequest());
 
         expect(httpResponse).toEqual(serverError(new ServerError()));
+    });
+
+    it('should call Validation with correct value', async () => {
+        const { sut, validationStub } = makeSut();
+        const validateSpy = jest.spyOn(validationStub, 'validate');
+
+        const httpRequest = makeFakeRequest();
+        await sut.handle(httpRequest);
+
+        expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
     });
 
     it('should return 200 if valid data is provided', async () => {
