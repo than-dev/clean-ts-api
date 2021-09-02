@@ -1,4 +1,4 @@
-import { Validation } from './validation';
+import { Validation } from '../../controllers/signup/signup-protocols';
 
 export class ValidationComposite implements Validation {
     private readonly validations: Validation[];
