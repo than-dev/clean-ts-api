@@ -20,7 +20,7 @@ describe('DbAuthentication', () => {
         id: 'any_id',
         name: 'any_name',
         email: 'any_email@mail.com',
-        password: 'any_password'
+        password: 'hashed_password'
     });
 
     const makeHashCompareStub = (): HashComparer => {
@@ -91,10 +91,13 @@ describe('DbAuthentication', () => {
         expect(accessToken).toBeFalsy();
     });
 
-    it('should call HashCompare with correct password', async () => {
+    it('should call HashCompare with correct values', async () => {
         const { sut, hashComparerStub } = makeSut();
         const compareSpy = jest.spyOn(hashComparerStub, 'compare');
         await sut.auth(makeFakeAuthentication());
-        expect(compareSpy).toHaveBeenCalledWith('any_password');
+        expect(compareSpy).toHaveBeenCalledWith(
+            'any_password',
+            'hashed_password'
+        );
     });
 });
