@@ -179,6 +179,6 @@ describe('DbAuthentication', () => {
         const { sut, updateAccessTokenRepositoryStub } = makeSut();
         const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'update');
         await sut.auth(makeFakeAuthentication());
-        expect(updateSpy).toHaveBeenCalledWith('any_id', '');
+        expect(updateSpy).toHaveBeenCalledWith('any_id', 'any_token');
     });
 });
