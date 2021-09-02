@@ -33,6 +33,7 @@ export class DbAuthentication implements Authentication {
             );
             await this.tokenGenerator.generate(account.id);
         }
+
         return '';
     }
 }
