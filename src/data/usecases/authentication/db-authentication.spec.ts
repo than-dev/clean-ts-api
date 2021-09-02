@@ -1,6 +1,6 @@
 import { AuthenticationModel } from './../../../domain/usecases/authentication';
 /* eslint-disable @typescript-eslint/brace-style */
-import { LoadAccountByEmailRepository } from '../../protocols/load-account-by-email-repository';
+import { LoadAccountByEmailRepository } from '../../protocols/db/load-account-by-email-repository';
 import { AccountModel } from './../../../domain/models/account';
 import { DbAuthentication } from './db-authentication';
 describe('DbAuthentication', () => {
