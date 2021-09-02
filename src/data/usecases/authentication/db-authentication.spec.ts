@@ -149,4 +149,10 @@ describe('DbAuthentication', () => {
         await sut.auth(makeFakeAuthentication());
         expect(generateSpy).toHaveBeenCalledWith('any_id');
     });
+
+    it('should return token on success', async () => {
+        const { sut } = makeSut();
+        const accessToken = await sut.auth(makeFakeAuthentication());
+        expect(accessToken).toBe('any_token');
+    });
 });
