@@ -9,7 +9,7 @@ import {
     UpdateAccessTokenRepository
 } from './db-authentication-protocols';
 
-describe('DbAuthentication', () => {
+describe('DbAuthentication UseCase', () => {
     interface SutTypes {
         sut: DbAuthentication;
         loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository;
