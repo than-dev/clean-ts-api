@@ -8,18 +8,19 @@ import {
 } from './db-authentication-protocols';
 
 export class DbAuthentication implements Authentication {
-    private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository;
+    private readonly loadByEmailAccountByEmailRepository: LoadAccountByEmailRepository;
     private readonly hashComparer: HashComparer;
     private readonly encrypter: Encrypter;
     private readonly updateAccessTokenAccessTokenRepository: UpdateAccessTokenRepository;
 
     constructor(
-        loadAccountByEmailRepository: LoadAccountByEmailRepository,
+        loadByEmailAccountByEmailRepository: LoadAccountByEmailRepository,
         hashComparer: HashComparer,
         encrypter: Encrypter,
         updateAccessTokenAccessTokenRepository: UpdateAccessTokenRepository
     ) {
-        this.loadAccountByEmailRepository = loadAccountByEmailRepository;
+        this.loadByEmailAccountByEmailRepository =
+            loadByEmailAccountByEmailRepository;
         this.hashComparer = hashComparer;
         this.encrypter = encrypter;
         this.updateAccessTokenAccessTokenRepository =
@@ -27,9 +28,10 @@ export class DbAuthentication implements Authentication {
     }
 
     async auth(authentication: AuthenticationModel): Promise<string> {
-        const account = await this.loadAccountByEmailRepository.load(
-            authentication.email
-        );
+        const account =
+            await this.loadByEmailAccountByEmailRepository.loadByEmail(
+                authentication.email
+            );
 
         if (account) {
             const isValid = await this.hashComparer.compare(
