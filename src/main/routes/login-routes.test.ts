@@ -51,5 +51,15 @@ describe('Login Routes', () => {
                 })
                 .expect(200);
         });
+
+        it('should return 401 if user not exists', async () => {
+            await request(app)
+                .post('/api/login')
+                .send({
+                    email: 'any_email@mail.com',
+                    password: 'invalid_pass'
+                })
+                .expect(401);
+        });
     });
 });
