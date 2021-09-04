@@ -15,7 +15,7 @@ describe('DbAuthentication UseCase', () => {
         loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository;
         hashComparerStub: HashComparer;
         encrypterStub: Encrypter;
-        updateAccessTokenRepositoryStub: UpdateAccessTokenRepository;
+        updateAccessTokenAccessTokenRepositoryStub: UpdateAccessTokenRepository;
     }
 
     const makeFakeAuthentication = (): AuthenticationModel => ({
@@ -55,7 +55,10 @@ describe('DbAuthentication UseCase', () => {
             class UpdateAccessTokenRepositoryStub
                 implements UpdateAccessTokenRepository
             {
-                async update(id: string, token: string): Promise<void> {
+                async updateAccessToken(
+                    id: string,
+                    token: string
+                ): Promise<void> {
                     return new Promise((resolve) => resolve());
                 }
             }
@@ -81,13 +84,13 @@ describe('DbAuthentication UseCase', () => {
             makeLoadAccountByEmailRepositoryStub();
         const hashComparerStub = makeHashCompareStub();
         const encrypterStub = makeEncrypterStub();
-        const updateAccessTokenRepositoryStub =
+        const updateAccessTokenAccessTokenRepositoryStub =
             makeUpdateAccessTokenRepositoryStub();
         const sut = new DbAuthentication(
             loadAccountByEmailRepositoryStub,
             hashComparerStub,
             encrypterStub,
-            updateAccessTokenRepositoryStub
+            updateAccessTokenAccessTokenRepositoryStub
         );
 
         return {
@@ -95,7 +98,7 @@ describe('DbAuthentication UseCase', () => {
             loadAccountByEmailRepositoryStub,
             hashComparerStub,
             encrypterStub,
-            updateAccessTokenRepositoryStub
+            updateAccessTokenAccessTokenRepositoryStub
         };
     };
 
@@ -179,17 +182,23 @@ describe('DbAuthentication UseCase', () => {
     });
 
     it('should call UpdateAccessTokenRepository with correct values', async () => {
-        const { sut, updateAccessTokenRepositoryStub } = makeSut();
-        const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'update');
+        const { sut, updateAccessTokenAccessTokenRepositoryStub } = makeSut();
+        const updateAccessTokenSpy = jest.spyOn(
+            updateAccessTokenAccessTokenRepositoryStub,
+            'updateAccessToken'
+        );
         await sut.auth(makeFakeAuthentication());
-        expect(updateSpy).toHaveBeenCalledWith('any_id', 'any_token');
+        expect(updateAccessTokenSpy).toHaveBeenCalledWith(
+            'any_id',
+            'any_token'
+        );
     });
 
     it('should throw if UpdateAccessTokenRepository throws', async () => {
-        const { sut, updateAccessTokenRepositoryStub } = makeSut();
+        const { sut, updateAccessTokenAccessTokenRepositoryStub } = makeSut();
         jest.spyOn(
-            updateAccessTokenRepositoryStub,
-            'update'
+            updateAccessTokenAccessTokenRepositoryStub,
+            'updateAccessToken'
         ).mockReturnValueOnce(
             new Promise((resolve, reject) => reject(new Error()))
         );
