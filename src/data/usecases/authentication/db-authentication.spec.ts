@@ -14,7 +14,7 @@ describe('DbAuthentication UseCase', () => {
         sut: DbAuthentication;
         loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository;
         hashComparerStub: HashComparer;
-        tokenGeneratorStub: Encrypter;
+        encrypterStub: Encrypter;
         updateAccessTokenRepositoryStub: UpdateAccessTokenRepository;
     }
 
@@ -80,13 +80,13 @@ describe('DbAuthentication UseCase', () => {
         const loadAccountByEmailRepositoryStub =
             makeLoadAccountByEmailRepositoryStub();
         const hashComparerStub = makeHashCompareStub();
-        const tokenGeneratorStub = makeEncrypterStub();
+        const encrypterStub = makeEncrypterStub();
         const updateAccessTokenRepositoryStub =
             makeUpdateAccessTokenRepositoryStub();
         const sut = new DbAuthentication(
             loadAccountByEmailRepositoryStub,
             hashComparerStub,
-            tokenGeneratorStub,
+            encrypterStub,
             updateAccessTokenRepositoryStub
         );
 
@@ -94,7 +94,7 @@ describe('DbAuthentication UseCase', () => {
             sut,
             loadAccountByEmailRepositoryStub,
             hashComparerStub,
-            tokenGeneratorStub,
+            encrypterStub,
             updateAccessTokenRepositoryStub
         };
     };
@@ -127,9 +127,9 @@ describe('DbAuthentication UseCase', () => {
         await expect(promise).rejects.toThrow();
     });
 
-    it('should throw if TokenGenerate throws', async () => {
-        const { sut, tokenGeneratorStub } = makeSut();
-        jest.spyOn(tokenGeneratorStub, 'encrypt').mockReturnValueOnce(
+    it('should throw if Encrypter throws', async () => {
+        const { sut, encrypterStub } = makeSut();
+        jest.spyOn(encrypterStub, 'encrypt').mockReturnValueOnce(
             new Promise((resolve, reject) => reject(new Error()))
         );
         const promise = sut.auth(makeFakeAuthentication());
@@ -166,8 +166,8 @@ describe('DbAuthentication UseCase', () => {
     });
 
     it('should call Encrypter with correct id', async () => {
-        const { sut, tokenGeneratorStub } = makeSut();
-        const encryptSpy = jest.spyOn(tokenGeneratorStub, 'encrypt');
+        const { sut, encrypterStub } = makeSut();
+        const encryptSpy = jest.spyOn(encrypterStub, 'encrypt');
         await sut.auth(makeFakeAuthentication());
         expect(encryptSpy).toHaveBeenCalledWith('any_id');
     });
