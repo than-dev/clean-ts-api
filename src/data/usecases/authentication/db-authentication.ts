@@ -1,3 +1,4 @@
+import { AccountModel } from './../../../domain/models/account';
 import {
     LoadAccountByEmailRepository,
     AuthenticationModel,
@@ -8,19 +9,18 @@ import {
 } from './db-authentication-protocols';
 
 export class DbAuthentication implements Authentication {
-    private readonly loadByEmailAccountByEmailRepository: LoadAccountByEmailRepository;
+    private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository;
     private readonly hashComparer: HashComparer;
     private readonly encrypter: Encrypter;
     private readonly updateAccessTokenAccessTokenRepository: UpdateAccessTokenRepository;
 
     constructor(
-        loadByEmailAccountByEmailRepository: LoadAccountByEmailRepository,
+        loadAccountByEmailRepository: LoadAccountByEmailRepository,
         hashComparer: HashComparer,
         encrypter: Encrypter,
         updateAccessTokenAccessTokenRepository: UpdateAccessTokenRepository
     ) {
-        this.loadByEmailAccountByEmailRepository =
-            loadByEmailAccountByEmailRepository;
+        this.loadAccountByEmailRepository = loadAccountByEmailRepository;
         this.hashComparer = hashComparer;
         this.encrypter = encrypter;
         this.updateAccessTokenAccessTokenRepository =
@@ -28,10 +28,9 @@ export class DbAuthentication implements Authentication {
     }
 
     async auth(authentication: AuthenticationModel): Promise<string> {
-        const account =
-            await this.loadByEmailAccountByEmailRepository.loadByEmail(
-                authentication.email
-            );
+        const account = await this.loadAccountByEmailRepository.loadByEmail(
+            authentication.email
+        );
 
         if (account) {
             const isValid = await this.hashComparer.compare(

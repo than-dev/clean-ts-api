@@ -1,6 +1,8 @@
 import { InsertOneResult } from 'mongodb';
-import { AccountModel } from '../../domain/models/account';
-import { AddAccountModel } from '../../domain/usecases/add-account';
+import {
+    AccountModel,
+    AddAccountModel
+} from '../../usecases/add-account/db-add-account-protocols';
 
 export interface AddAccountRepository {
     add(
