@@ -29,7 +29,7 @@ describe('Account Mongo Repository', () => {
             email: 'any_email@mail.com',
             password: 'any_password'
         });
-        expect(result.insertedId).toBeTruthy();
+        expect(result.id).toBeTruthy();
     });
 
     it('should return an account on success', async () => {
@@ -51,5 +51,24 @@ describe('Account Mongo Repository', () => {
         const sut = makeSut();
         const account = await sut.loadByEmail('any_email@mail.com');
         expect(account).toBeFalsy();
+    });
+
+    it('should update the account accessToken on updateAccessToken success', async () => {
+        const sut = makeSut();
+        const { insertedId } = await accountCollection.insertOne({
+            name: 'any_name',
+            email: 'any_email@mail.com',
+            password: 'any_password'
+        });
+        const account = await accountCollection.findOne({ _id: insertedId });
+        expect(account.accessToken).toBeFalsy();
+
+        await sut.updateAccessToken(insertedId, 'any_token');
+
+        const { accessToken } = await accountCollection.findOne({
+            _id: insertedId
+        });
+
+        expect(accessToken).toBeTruthy();
     });
 });
