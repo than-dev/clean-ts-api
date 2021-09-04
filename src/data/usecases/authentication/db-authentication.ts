@@ -1,4 +1,3 @@
-import { AccountModel } from './../../../domain/models/account';
 import {
     LoadAccountByEmailRepository,
     AuthenticationModel,

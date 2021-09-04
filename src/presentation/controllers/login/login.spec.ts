@@ -1,4 +1,4 @@
-import { AuthenticationModel } from './../../../domain/usecases/authentication';
+import { AuthenticationModel } from '../../../domain/usecases/authentication';
 import { LoginController } from './login';
 import {
     badRequest,
