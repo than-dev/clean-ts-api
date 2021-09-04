@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 /* eslint-disable @typescript-eslint/brace-style */
 import { DbAuthentication } from './db-authentication';
 import {
@@ -56,7 +57,7 @@ describe('DbAuthentication UseCase', () => {
                 implements UpdateAccessTokenRepository
             {
                 async updateAccessToken(
-                    id: string,
+                    id: ObjectId,
                     token: string
                 ): Promise<void> {
                     return new Promise((resolve) => resolve());
