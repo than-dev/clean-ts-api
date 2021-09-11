@@ -1,6 +1,6 @@
 {
   "name": "clean_api",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "main": "index.js",
   "repository": "https://github.com/NathanCotrim/Clean-Node-API.git",
   "author": "NathanCotrim <nathan.cotrim@gmail.com>",
