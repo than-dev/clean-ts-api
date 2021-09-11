@@ -39,7 +39,7 @@
     "validator": "^13.6.0"
   },
   "scripts": {
-    "start": "node dist/src/main/server.js",
+    "start": "node dist/main/server.js",
     "build": "rimraf dist && tsc",
     "dev": "sucrase-node src/main/server.ts",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
