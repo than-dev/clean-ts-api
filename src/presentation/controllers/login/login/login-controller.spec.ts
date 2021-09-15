@@ -4,14 +4,14 @@ import {
     serverError,
     unauthorized,
     ok
-} from '../../helpers/http/http-helper';
-import { MissingParamError } from '../../errors';
+} from '../../../helpers/http/http-helper';
 import {
     HttpRequest,
     Authentication,
-    Validation
+    Validation,
+    AuthenticationModel
 } from './login-controller-protocols';
-import { AuthenticationModel } from '../../../domain/usecases/authentication';
+import { MissingParamError } from '../../../errors';
 
 const makeAuthentication = (): Authentication => {
     class AuthenticationStub implements Authentication {
