@@ -1,2 +1,4 @@
-data
+./data
+node_modules
+coverage
 dist
