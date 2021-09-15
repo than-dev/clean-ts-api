@@ -1,14 +1,14 @@
-import { Validation } from '../../../presentation/protocols/validation';
-import { EmailValidator } from '../../../presentation/protocols/email-validator';
 import {
-    CompareFieldsValidation,
-    EmailValidation,
+    ValidationComposite,
     RequiredFieldValidation,
-    ValidationComposite
-} from '../../../presentation/helpers/validators';
+    CompareFieldsValidation,
+    EmailValidation
+} from '../../../../presentation/helpers/validators';
 import { makeSignUpValidation } from './signup-validation-factory';
+import { Validation } from '../../../../presentation/protocols/validation';
+import { EmailValidator } from '../../../../presentation/protocols/email-validator';
 
-jest.mock('../../../presentation/helpers/validators/validation-composite');
+jest.mock('../../../../presentation/helpers/validators/validation-composite');
 
 const makeEmailValidator = (): EmailValidator => {
     class EmailValidatorStub implements EmailValidator {
@@ -16,12 +16,11 @@ const makeEmailValidator = (): EmailValidator => {
             return true;
         }
     }
-
     return new EmailValidatorStub();
 };
 
 describe('SignUpValidation Factory', () => {
-    it('should call ValidationComposite with all validations', () => {
+    it('should call ValidationComposite with all validatations', () => {
         makeSignUpValidation();
         const validations: Validation[] = [];
         for (const field of [

@@ -1,23 +1,23 @@
-import { app } from '../config/app';
 import request from 'supertest';
+import app from '../config/app';
 
 describe('Content Type Middleware', () => {
-    it('should return default content-type as json', async () => {
-        app.get('/test_content_type', (req, res) => {
+    it('should return default content type as json', async () => {
+        app.get('/it_content_type', (req, res) => {
             res.send('');
         });
         await request(app)
-            .get('/test_content_type')
+            .get('/it_content_type')
             .expect('content-type', /json/);
     });
 
-    it('should return content-type as xml when forced', async () => {
-        app.get('/test_content_type_xml', (req, res) => {
+    it('should return xml content type when forced', async () => {
+        app.get('/it_content_type_xml', (req, res) => {
             res.type('xml');
             res.send('');
         });
         await request(app)
-            .get('/test_content_type_xml')
+            .get('/it_content_type_xml')
             .expect('content-type', /xml/);
     });
 });

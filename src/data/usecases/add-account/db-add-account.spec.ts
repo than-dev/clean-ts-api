@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/brace-style */
 import { DbAddAccount } from './db-add-account';
 import {
     Hasher,
@@ -102,7 +101,7 @@ describe('DbAddAccount Usecase', () => {
         });
     });
 
-    it('should throw if Hasher throws', async () => {
+    it('should throw if AddAccountRepository throws', async () => {
         const { sut, addAccountRepositoryStub } = makeSut();
         jest.spyOn(addAccountRepositoryStub, 'add').mockReturnValueOnce(
             new Promise((resolve, reject) => reject(new Error()))
@@ -117,16 +116,6 @@ describe('DbAddAccount Usecase', () => {
         expect(account).toEqual(makeFakeAccount());
     });
 
-    it('should call LoadAccountByEmailRepository with correct email', async () => {
-        const { sut, loadAccountByEmailRepositoryStub } = makeSut();
-        const loadSpy = jest.spyOn(
-            loadAccountByEmailRepositoryStub,
-            'loadByEmail'
-        );
-        await sut.add(makeFakeAccountData());
-        expect(loadSpy).toHaveBeenCalledWith('valid_email@mail.com');
-    });
-
     it('should return null if LoadAccountByEmailRepository not return null', async () => {
         const { sut, loadAccountByEmailRepositoryStub } = makeSut();
         jest.spyOn(
@@ -137,5 +126,15 @@ describe('DbAddAccount Usecase', () => {
         );
         const account = await sut.add(makeFakeAccountData());
         expect(account).toBeNull();
+    });
+
+    it('should call LoadAccountByEmailRepository with correct email', async () => {
+        const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+        const loadSpy = jest.spyOn(
+            loadAccountByEmailRepositoryStub,
+            'loadByEmail'
+        );
+        await sut.add(makeFakeAccountData());
+        expect(loadSpy).toHaveBeenCalledWith('valid_email@mail.com');
     });
 });
