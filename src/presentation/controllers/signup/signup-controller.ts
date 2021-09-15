@@ -1,12 +1,12 @@
 import {
+    HttpResponse,
     HttpRequest,
     Controller,
-    HttpResponse,
     AddAccount,
-    Validation,
     Authentication
 } from './signup-controller-protocols';
 import { badRequest, serverError, ok } from '../../helpers/http/http-helper';
+import { Validation } from '../../protocols/validation';
 
 export class SignUpController implements Controller {
     constructor(
@@ -22,16 +22,16 @@ export class SignUpController implements Controller {
                 return badRequest(error);
             }
             const { name, email, password } = httpRequest.body;
-            const account = await this.addAccount.add({
+            await this.addAccount.add({
                 name,
                 email,
                 password
             });
-            await this.authentication.auth({
+            const accessToken = await this.authentication.auth({
                 email,
                 password
             });
-            return ok(account);
+            return ok({ accessToken });
         } catch (error) {
             return serverError(error);
         }
