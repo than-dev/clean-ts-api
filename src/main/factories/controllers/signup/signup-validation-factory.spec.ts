@@ -20,7 +20,7 @@ const makeEmailValidator = (): EmailValidator => {
 };
 
 describe('SignUpValidation Factory', () => {
-    it('should call ValidationComposite with all validatations', () => {
+    it('should call ValidationComposite with all validations', () => {
         makeSignUpValidation();
         const validations: Validation[] = [];
         for (const field of [
