@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { DbAddSurvey } from './db-add-survey';
 import { AddSurveyModel, AddSurveyRepository } from './db-add-survey-protocols';
 
@@ -45,5 +46,16 @@ describe('DbAddSurvey Usecase', () => {
         await sut.add(surveyData);
 
         expect(addSpy).toHaveBeenCalledWith(surveyData);
+    });
+
+    it('should throws if AddSurveyRepository throws', async () => {
+        const { sut, addSurveyRepositoryStub } = makeSut();
+        jest.spyOn(addSurveyRepositoryStub, 'add').mockReturnValueOnce(
+            new Promise((resolve, reject) => reject(new Error()))
+        );
+
+        const promise = sut.add(makeFakeSurveyData());
+
+        expect(promise).rejects.toThrow();
     });
 });
