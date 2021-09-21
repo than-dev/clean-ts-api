@@ -1,13 +1,12 @@
-import { HttpRequest } from '../protocols/http';
+// import { HttpRequest } from '../protocols/http';
+import { AccessDeniedError } from '../errors/access-denied-error';
+import { forbidden } from '../helpers/http/http-helper';
+import { AuthMiddleware } from './auth-middleware';
 
 describe('Auth Middleware', () => {
     interface SutTypes {
         sut: AuthMiddleware;
     }
-
-    const makeFakeRequest = (): HttpRequest => ({
-        headers: {}
-    });
 
     const makeSut = (): SutTypes => {
         const sut = new AuthMiddleware();
@@ -17,12 +16,14 @@ describe('Auth Middleware', () => {
         };
     };
 
-    it('should return 403 if no x-access-token exists in headers', () => {
+    // const makeFakeRequest = (): HttpRequest => ({
+    //     headers: {}
+    // });
+
+    it('should return 403 if no x-access-token exists in headers', async () => {
         const { sut } = makeSut();
-        const httpRequest: HttpRequest = {};
+        const httpResponse = await sut.handle({});
 
-        const httpResponse = await sut.handle();
-
-        expect(httpResponse).toEqual(forbidden());
+        expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
     });
 });
