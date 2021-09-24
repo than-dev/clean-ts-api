@@ -124,4 +124,19 @@ describe('DbLoadAccountByToken Usecase', () => {
 
         expect(promise).rejects.toThrow();
     });
+
+    it('should throws if LoadAccountByTokenRepository throws', async () => {
+        const { sut, loadAccountByTokenRepositoryStub } = makeSut();
+
+        jest.spyOn(
+            loadAccountByTokenRepositoryStub,
+            'loadByToken'
+        ).mockReturnValueOnce(
+            new Promise((resolve, reject) => reject(new Error()))
+        );
+
+        const promise = sut.load('any_token');
+
+        expect(promise).rejects.toThrow();
+    });
 });
