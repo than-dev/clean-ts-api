@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/brace-style */
 import { DbAuthentication } from './db-authentication';
 import {
     AccountModel,

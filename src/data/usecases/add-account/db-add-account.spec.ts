@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/brace-style */
 import { DbAddAccount } from './db-add-account';
 import {
     Hasher,
