@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/brace-style */
 import { DbLoadAccountByToken } from './db-load-account-by-token';
 import { Decrypter } from '../../../data/protocols/criptography/decrypter';
@@ -110,5 +111,17 @@ describe('DbLoadAccountByToken Usecase', () => {
         const account = await sut.load('any_token');
 
         expect(account).toEqual(makeFakeAccount());
+    });
+
+    it('should throws if Decrypter throws', async () => {
+        const { sut, decrypterStub } = makeSut();
+
+        jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(
+            new Promise((resolve, reject) => reject(new Error()))
+        );
+
+        const promise = sut.load('any_token');
+
+        expect(promise).rejects.toThrow();
     });
 });
