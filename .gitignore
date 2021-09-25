@@ -3,3 +3,4 @@ dist
 coverage
 .vscode
 globalConfig.json
+**.lock
