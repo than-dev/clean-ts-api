@@ -6,12 +6,14 @@ import { MongoHelper } from '../helpers/mongo-helper';
 import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/account/load-account-by-email-repository';
 import { UpdateAccessTokenRepository } from '../../../../data/protocols/db/account/update-access-token-repository';
 import { ObjectId } from 'mongodb';
+import { LoadAccountByToken } from '../../../../domain/usecases/load-account-by-token';
 
 export class AccountMongoRepository
     implements
         AddAccountRepository,
         LoadAccountByEmailRepository,
-        UpdateAccessTokenRepository
+        UpdateAccessTokenRepository,
+        LoadAccountByToken
 {
     async add(accountData: AddAccountModel): Promise<AccountModel> {
         const accountCollection = await MongoHelper.getCollection('accounts');
@@ -46,5 +48,14 @@ export class AccountMongoRepository
                 }
             }
         );
+    }
+
+    async loadByToken(token: string, role?: string): Promise<AccountModel> {
+        const accountCollection = await MongoHelper.getCollection('accounts');
+        const account = await accountCollection.findOne({
+            accessToken: token,
+            role
+        });
+        return account && MongoHelper.map(account);
     }
 }
