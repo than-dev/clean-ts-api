@@ -6,7 +6,7 @@ import { makeAddSurveyController } from '../factories/controllers/survey/add-sur
 import { makeAuthMiddleware } from '../factories/middlewares/auth-middleware-factory';
 
 export default (router: Router): void => {
-    const adminAuth = adaptMiddleware(makeAuthMiddleware());
+    const adminAuth = adaptMiddleware(makeAuthMiddleware('admin'));
 
     router.post('/surveys', adminAuth, adaptRoute(makeAddSurveyController()));
 };
