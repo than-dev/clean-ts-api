@@ -21,7 +21,7 @@ describe('Survey Routes', () => {
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     describe('POST /surveys', () => {
-        it('should return 204 on success', async () => {
+        it('should return 403 on addSurvey without accessToken', async () => {
             await request(app)
                 .post('/api/surveys')
                 .send({
@@ -33,7 +33,7 @@ describe('Survey Routes', () => {
                         }
                     ]
                 })
-                .expect(204);
+                .expect(403);
         });
     });
 });
