@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/brace-style */
-import { DbLoadAccountByToken } from './db-load-account-by-token';
 import { Decrypter } from '../../../data/protocols/criptography/decrypter';
-import { AccountModel } from '../add-account/db-add-account-protocols';
+import { AccountModel } from '../../../domain/models/account';
 import { LoadAccountByTokenRepository } from '../../protocols/db/account/load-account-by-token-repository';
+import { DbLoadAccountByToken } from './db-load-account-by-token';
 
 describe('DbLoadAccountByToken Usecase', () => {
     interface SutTypes {
@@ -65,7 +65,7 @@ describe('DbLoadAccountByToken Usecase', () => {
         const { sut, decrypterStub } = makeSut();
         const decryptSpy = jest.spyOn(decrypterStub, 'decrypt');
 
-        await sut.load('any_token');
+        await sut.loadByToken('any_token');
 
         expect(decryptSpy).toHaveBeenCalledWith('any_token');
     });
@@ -76,7 +76,7 @@ describe('DbLoadAccountByToken Usecase', () => {
             new Promise((resolve) => resolve(null))
         );
 
-        const account = await sut.load('any_token');
+        const account = await sut.loadByToken('any_token');
 
         expect(account).toBeNull();
     });
@@ -88,7 +88,7 @@ describe('DbLoadAccountByToken Usecase', () => {
             'loadByToken'
         );
 
-        await sut.load('any_token', 'any_role');
+        await sut.loadByToken('any_token', 'any_role');
 
         expect(loadByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role');
     });
@@ -100,7 +100,7 @@ describe('DbLoadAccountByToken Usecase', () => {
             'loadByToken'
         ).mockReturnValueOnce(new Promise((resolve) => resolve(null)));
 
-        const account = await sut.load('any_token');
+        const account = await sut.loadByToken('any_token');
 
         expect(account).toBeNull();
     });
@@ -108,7 +108,7 @@ describe('DbLoadAccountByToken Usecase', () => {
     it('should return an account on success', async () => {
         const { sut } = makeSut();
 
-        const account = await sut.load('any_token');
+        const account = await sut.loadByToken('any_token');
 
         expect(account).toEqual(makeFakeAccount());
     });
@@ -120,7 +120,7 @@ describe('DbLoadAccountByToken Usecase', () => {
             new Promise((resolve, reject) => reject(new Error()))
         );
 
-        const promise = sut.load('any_token');
+        const promise = sut.loadByToken('any_token');
 
         expect(promise).rejects.toThrow();
     });
@@ -135,7 +135,7 @@ describe('DbLoadAccountByToken Usecase', () => {
             new Promise((resolve, reject) => reject(new Error()))
         );
 
-        const promise = sut.load('any_token');
+        const promise = sut.loadByToken('any_token');
 
         expect(promise).rejects.toThrow();
     });

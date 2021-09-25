@@ -2,8 +2,8 @@ import { HttpRequest } from '../protocols/http';
 import { AccessDeniedError } from '../errors/access-denied-error';
 import { forbidden, ok, serverError } from '../helpers/http/http-helper';
 import { AuthMiddleware } from './auth-middleware';
-import { LoadAccountByToken } from '../../domain/usecases/load-account-by-token';
 import { AccountModel } from '../../domain/models/account';
+import { LoadAccountByToken } from './auth-middleware-protocols';
 
 describe('Auth Middleware', () => {
     interface SutTypes {
@@ -23,7 +23,7 @@ describe('Auth Middleware', () => {
 
     const makeLoadAccountByTokenStub = (): LoadAccountByToken => {
         class LoadAccountByTokenStub implements LoadAccountByToken {
-            async load(
+            async loadByToken(
                 accessToken: string,
                 role?: string
             ): Promise<AccountModel> {
@@ -58,7 +58,7 @@ describe('Auth Middleware', () => {
         const role = 'any_role';
         const { sut, loadAccountByTokenStub } = makeSut(role);
 
-        const loadSpy = jest.spyOn(loadAccountByTokenStub, 'load');
+        const loadSpy = jest.spyOn(loadAccountByTokenStub, 'loadByToken');
 
         await sut.handle(makeFakeRequest());
 
@@ -68,7 +68,7 @@ describe('Auth Middleware', () => {
     it('should return 403 if LoadAccountByToken returns null', async () => {
         const { sut, loadAccountByTokenStub } = makeSut();
 
-        jest.spyOn(loadAccountByTokenStub, 'load').mockReturnValueOnce(
+        jest.spyOn(loadAccountByTokenStub, 'loadByToken').mockReturnValueOnce(
             new Promise((resolve) => resolve(null))
         );
 
@@ -88,7 +88,7 @@ describe('Auth Middleware', () => {
     it('should return 500 if LoadAccountByToken throws', async () => {
         const { sut, loadAccountByTokenStub } = makeSut();
 
-        jest.spyOn(loadAccountByTokenStub, 'load').mockReturnValueOnce(
+        jest.spyOn(loadAccountByTokenStub, 'loadByToken').mockReturnValueOnce(
             new Promise((resolve, reject) => reject(new Error()))
         );
 
