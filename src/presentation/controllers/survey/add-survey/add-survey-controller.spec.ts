@@ -11,57 +11,57 @@ import {
     serverError
 } from '../../../helpers/http/http-helper';
 
-describe('Add Survey Controller', () => {
-    interface SutTypes {
-        sut: AddSurveyController;
-        validationStub: Validation;
-        addSurveyStub: AddSurvey;
+interface SutTypes {
+    sut: AddSurveyController;
+    validationStub: Validation;
+    addSurveyStub: AddSurvey;
+}
+
+const makeFakeRequest = (): HttpRequest => ({
+    body: {
+        question: 'any_question',
+        answers: [
+            {
+                image: 'any_img',
+                answer: 'any_answer'
+            }
+        ]
+    }
+});
+
+const makeAddSurveyStub = (): AddSurvey => {
+    class AddSurveyStub implements AddSurvey {
+        async add(data: AddSurveyModel): Promise<void> {
+            return new Promise((resolve) => resolve());
+        }
     }
 
-    const makeFakeRequest = (): HttpRequest => ({
-        body: {
-            question: 'any_question',
-            answers: [
-                {
-                    image: 'any_img',
-                    answer: 'any_answer'
-                }
-            ]
+    return new AddSurveyStub();
+};
+
+const makeValidationStub = (): Validation => {
+    class ValidationStub implements Validation {
+        validate(input: any): Error {
+            return null;
         }
-    });
+    }
 
-    const makeAddSurveyStub = (): AddSurvey => {
-        class AddSurveyStub implements AddSurvey {
-            async add(data: AddSurveyModel): Promise<void> {
-                return new Promise((resolve) => resolve());
-            }
-        }
+    return new ValidationStub();
+};
 
-        return new AddSurveyStub();
+const makeSut = (): SutTypes => {
+    const validationStub = makeValidationStub();
+    const addSurveyStub = makeAddSurveyStub();
+    const sut = new AddSurveyController(validationStub, addSurveyStub);
+
+    return {
+        sut,
+        validationStub,
+        addSurveyStub
     };
+};
 
-    const makeValidationStub = (): Validation => {
-        class ValidationStub implements Validation {
-            validate(input: any): Error {
-                return null;
-            }
-        }
-
-        return new ValidationStub();
-    };
-
-    const makeSut = (): SutTypes => {
-        const validationStub = makeValidationStub();
-        const addSurveyStub = makeAddSurveyStub();
-        const sut = new AddSurveyController(validationStub, addSurveyStub);
-
-        return {
-            sut,
-            validationStub,
-            addSurveyStub
-        };
-    };
-
+describe('Add Survey Controller', () => {
     it('should call Validation with correct values', async () => {
         const { sut, validationStub } = makeSut();
         const validateSpy = jest.spyOn(validationStub, 'validate');
