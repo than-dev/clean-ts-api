@@ -46,8 +46,7 @@ describe('Survey Routes', () => {
             const { insertedId } = await accountCollection.insertOne({
                 name: 'Nathan',
                 email: 'nathan.cotrim@gmail.com',
-                password: 'n27a01t05',
-                role: 'admin'
+                password: 'n27a01t05'
             });
 
             const { _id } = await accountCollection.findOne({
