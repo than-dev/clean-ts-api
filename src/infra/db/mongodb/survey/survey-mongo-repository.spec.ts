@@ -1,12 +1,22 @@
 import { MongoHelper } from '../helpers/mongo-helper';
 import { Collection } from 'mongodb';
 import { SurveyMongoRepository } from './survey-mongo-repository';
+import MockDate from 'mockdate';
 
 let surveyCollection: Collection;
 
+const makeSut = (): SurveyMongoRepository => {
+    return new SurveyMongoRepository();
+};
+
 describe('Survey Mongo Repository', () => {
     beforeAll(async () => {
+        MockDate.set(new Date());
         await MongoHelper.connect(process.env.MONGO_URL);
+    });
+
+    beforeAll(() => {
+        MockDate.reset();
     });
 
     afterAll(async () => {
@@ -17,10 +27,6 @@ describe('Survey Mongo Repository', () => {
         surveyCollection = await MongoHelper.getCollection('surveys');
         await surveyCollection.deleteMany({});
     });
-
-    const makeSut = (): SurveyMongoRepository => {
-        return new SurveyMongoRepository();
-    };
 
     it('should return an account on add success', async () => {
         const sut = makeSut();
@@ -34,7 +40,8 @@ describe('Survey Mongo Repository', () => {
                 {
                     answer: 'any_answer'
                 }
-            ]
+            ],
+            date: new Date()
         });
 
         const survey = await surveyCollection.findOne({

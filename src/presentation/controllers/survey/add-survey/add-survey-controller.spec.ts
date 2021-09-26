@@ -10,6 +10,7 @@ import {
     noContent,
     serverError
 } from '../../../helpers/http/http-helper';
+import MockDate from 'mockdate';
 
 interface SutTypes {
     sut: AddSurveyController;
@@ -63,6 +64,14 @@ const makeSut = (): SutTypes => {
 };
 
 describe('Add Survey Controller', () => {
+    beforeAll(() => {
+        MockDate.set(new Date());
+    });
+
+    beforeAll(() => {
+        MockDate.reset();
+    });
+
     it('should call Validation with correct values', async () => {
         const { sut, validationStub } = makeSut();
         const validateSpy = jest.spyOn(validationStub, 'validate');
