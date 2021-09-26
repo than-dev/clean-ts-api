@@ -4,13 +4,19 @@ import request from 'supertest';
 import app from '../config/app';
 import { sign } from 'jsonwebtoken';
 import env from '../config/env';
+import MockDate from 'mockdate';
 
 let surveyCollection: Collection;
 let accountCollection: Collection;
 
 describe('Survey Routes', () => {
     beforeAll(async () => {
+        MockDate.set(new Date());
         await MongoHelper.connect(process.env.MONGO_URL);
+    });
+
+    beforeAll(() => {
+        MockDate.reset();
     });
 
     afterAll(async () => {
@@ -37,7 +43,8 @@ describe('Survey Routes', () => {
                             image: 'any_image',
                             answer: 'any_answer'
                         }
-                    ]
+                    ],
+                    date: new Date()
                 })
                 .expect(403);
         });
@@ -77,7 +84,8 @@ describe('Survey Routes', () => {
                             image: 'any_image',
                             answer: 'any_answer'
                         }
-                    ]
+                    ],
+                    date: new Date()
                 })
                 .expect(204);
         });
