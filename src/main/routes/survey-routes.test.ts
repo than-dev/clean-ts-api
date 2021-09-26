@@ -92,49 +92,77 @@ describe('Survey Routes', () => {
     });
 
     describe('GET /surveys', () => {
-        it('should return 403 on load survey without access token', async () => {
+        it('should return 403 on load surveys without access token', async () => {
             await request(app).get('/api/surveys').expect(403);
         });
 
-        // it('should return 204 on add survey with valid access token', async () => {
-        //     const { insertedId } = await accountCollection.insertOne({
-        //         name: 'Nathan',
-        //         email: 'nathan.cotrim@gmail.com',
-        //         password: 'n27a01t05',
-        //         role: 'admin'
-        //     });
+        it('should return 200 on load surveys with valid access token', async () => {
+            await surveyCollection.insertMany([
+                {
+                    question: 'any_question',
+                    answers: [
+                        {
+                            image: 'any_image',
+                            answer: 'any_answer'
+                        },
+                        {
+                            answer: 'any_answer'
+                        }
+                    ],
+                    date: new Date()
+                },
+                {
+                    question: 'other_question',
+                    answers: [
+                        {
+                            image: 'other_image',
+                            answer: 'other_answer'
+                        },
+                        {
+                            answer: 'other_answer'
+                        }
+                    ],
+                    date: new Date()
+                }
+            ]);
 
-        //     const { _id } = await accountCollection.findOne({
-        //         _id: insertedId
-        //     });
+            const { insertedId } = await accountCollection.insertOne({
+                name: 'Nathan',
+                email: 'nathan.cotrim@gmail.com',
+                password: 'n27a01t05'
+            });
 
-        //     const accessToken = sign({ _id }, env.jwtSecret);
+            const { _id } = await accountCollection.findOne({
+                _id: insertedId
+            });
 
-        //     await accountCollection.updateOne(
-        //         {
-        //             _id
-        //         },
-        //         {
-        //             $set: {
-        //                 accessToken
-        //             }
-        //         }
-        //     );
+            const accessToken = sign({ _id }, env.jwtSecret);
 
-        //     await request(app)
-        //         .post('/api/surveys')
-        //         .set('x-access-token', accessToken)
-        //         .send({
-        //             question: 'any_question',
-        //             answers: [
-        //                 {
-        //                     image: 'any_image',
-        //                     answer: 'any_answer'
-        //                 }
-        //             ],
-        //             date: new Date()
-        //         })
-        //         .expect(204);
-        // });
+            await accountCollection.updateOne(
+                {
+                    _id
+                },
+                {
+                    $set: {
+                        accessToken
+                    }
+                }
+            );
+
+            await request(app)
+                .get('/api/surveys')
+                .set('x-access-token', accessToken)
+                .send({
+                    question: 'any_question',
+                    answers: [
+                        {
+                            image: 'any_image',
+                            answer: 'any_answer'
+                        }
+                    ],
+                    date: new Date()
+                })
+                .expect(200);
+        });
     });
 });

@@ -15,11 +15,8 @@ describe('Survey Mongo Repository', () => {
         await MongoHelper.connect(process.env.MONGO_URL);
     });
 
-    afterAll(() => {
-        MockDate.reset();
-    });
-
     afterAll(async () => {
+        MockDate.reset();
         await MongoHelper.disconnect();
     });
 
