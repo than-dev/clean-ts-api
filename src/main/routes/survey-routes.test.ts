@@ -90,4 +90,51 @@ describe('Survey Routes', () => {
                 .expect(204);
         });
     });
+
+    describe('GET /surveys', () => {
+        it('should return 403 on load survey without access token', async () => {
+            await request(app).get('/api/surveys').expect(403);
+        });
+
+        // it('should return 204 on add survey with valid access token', async () => {
+        //     const { insertedId } = await accountCollection.insertOne({
+        //         name: 'Nathan',
+        //         email: 'nathan.cotrim@gmail.com',
+        //         password: 'n27a01t05',
+        //         role: 'admin'
+        //     });
+
+        //     const { _id } = await accountCollection.findOne({
+        //         _id: insertedId
+        //     });
+
+        //     const accessToken = sign({ _id }, env.jwtSecret);
+
+        //     await accountCollection.updateOne(
+        //         {
+        //             _id
+        //         },
+        //         {
+        //             $set: {
+        //                 accessToken
+        //             }
+        //         }
+        //     );
+
+        //     await request(app)
+        //         .post('/api/surveys')
+        //         .set('x-access-token', accessToken)
+        //         .send({
+        //             question: 'any_question',
+        //             answers: [
+        //                 {
+        //                     image: 'any_image',
+        //                     answer: 'any_answer'
+        //                 }
+        //             ],
+        //             date: new Date()
+        //         })
+        //         .expect(204);
+        // });
+    });
 });
