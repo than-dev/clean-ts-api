@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { SurveyModel } from '../../../domain/models/survey';
 import { LoadSurveysRepository } from '../../protocols/db/survey/load-surveys-repository';
 import { DbLoadSurveys } from './db-load-surveys';
@@ -80,5 +81,17 @@ describe('DbLoadSurveys', () => {
         const surveys = await sut.load();
 
         expect(surveys).toEqual(makeFakeSurveys());
+    });
+
+    it('should throw if LoadSurveyRepository throws', async () => {
+        const { sut, loadSurveysRepositoryStub } = makeSut();
+
+        jest.spyOn(loadSurveysRepositoryStub, 'loadAll').mockReturnValueOnce(
+            new Promise((resolve, reject) => reject(new Error()))
+        );
+
+        const promise = sut.load();
+
+        expect(promise).rejects.toThrow();
     });
 });
