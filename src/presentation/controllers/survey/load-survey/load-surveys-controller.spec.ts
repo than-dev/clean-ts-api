@@ -65,7 +65,7 @@ describe('LoadSurveys Controller', () => {
         MockDate.set(new Date());
     });
 
-    beforeAll(() => {
+    afterAll(() => {
         MockDate.reset();
     });
 

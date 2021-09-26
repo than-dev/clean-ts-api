@@ -15,7 +15,7 @@ describe('Survey Routes', () => {
         await MongoHelper.connect(process.env.MONGO_URL);
     });
 
-    beforeAll(() => {
+    afterAll(() => {
         MockDate.reset();
     });
 
