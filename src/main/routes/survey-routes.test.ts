@@ -9,6 +9,26 @@ import MockDate from 'mockdate';
 let surveyCollection: Collection;
 let accountCollection: Collection;
 
+const makeAccessToken = async (role?: string): Promise<any> => {
+    const { insertedId } = await accountCollection.insertOne({
+        name: 'Nathan',
+        email: 'nathan.cotrim@gmail.com',
+        password: 'n27a01t05',
+        role
+    });
+
+    const { _id } = await accountCollection.findOne({
+        _id: insertedId
+    });
+
+    const accessToken = sign({ _id }, env.jwtSecret);
+
+    return {
+        accessToken,
+        _id
+    };
+};
+
 describe('Survey Routes', () => {
     beforeAll(async () => {
         MockDate.set(new Date());
@@ -50,18 +70,7 @@ describe('Survey Routes', () => {
         });
 
         it('should return 204 on add survey with valid access token', async () => {
-            const { insertedId } = await accountCollection.insertOne({
-                name: 'Nathan',
-                email: 'nathan.cotrim@gmail.com',
-                password: 'n27a01t05',
-                role: 'admin'
-            });
-
-            const { _id } = await accountCollection.findOne({
-                _id: insertedId
-            });
-
-            const accessToken = sign({ _id }, env.jwtSecret);
+            const { accessToken, _id } = await makeAccessToken('admin');
 
             await accountCollection.updateOne(
                 {
@@ -126,17 +135,7 @@ describe('Survey Routes', () => {
                 }
             ]);
 
-            const { insertedId } = await accountCollection.insertOne({
-                name: 'Nathan',
-                email: 'nathan.cotrim@gmail.com',
-                password: 'n27a01t05'
-            });
-
-            const { _id } = await accountCollection.findOne({
-                _id: insertedId
-            });
-
-            const accessToken = sign({ _id }, env.jwtSecret);
+            const { accessToken, _id } = await makeAccessToken();
 
             await accountCollection.updateOne(
                 {
