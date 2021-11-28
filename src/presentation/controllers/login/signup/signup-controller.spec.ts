@@ -1,10 +1,5 @@
 import { SignUpController } from './signup-controller';
 import {
-    MissingParamError,
-    ServerError,
-    EmailInUseError
-} from '../../../errors';
-import {
     AccountModel,
     AddAccount,
     AddAccountModel,
@@ -19,6 +14,11 @@ import {
     badRequest,
     forbidden
 } from '../../../helpers/http/http-helper';
+import {
+    EmailInUseError,
+    MissingParamError,
+    ServerError
+} from '../../../errors';
 
 const makeAddAccount = (): AddAccount => {
     class AddAccountStub implements AddAccount {
