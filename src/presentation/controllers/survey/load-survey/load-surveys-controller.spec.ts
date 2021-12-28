@@ -9,10 +9,10 @@ import {
 } from './load-surveys-controller-protocols';
 import MockDate from 'mockdate';
 
-interface SutTypes {
+type SutTypes = {
     sut: LoadSurveysController;
     loadSurveysStub: LoadSurveys;
-}
+};
 
 const makeFakeSurveys = (): SurveyModel[] => {
     return [
