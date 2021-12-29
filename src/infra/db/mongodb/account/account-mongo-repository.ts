@@ -4,10 +4,10 @@ import { ObjectId } from 'mongodb';
 import {
     LoadAccountByEmailRepository,
     UpdateAccessTokenRepository
-} from '@/data/usecases/authentication/db-authentication-protocols';
+} from '@/data/usecases/account/authentication/db-authentication-protocols';
 import { AccountModel } from '@/domain/models/account';
-import { AddAccountModel } from '@/domain/usecases/add-account';
-import { LoadAccountByToken } from '@/domain/usecases/load-account-by-token';
+import { AddAccountModel } from '@/domain/usecases/account/add-account';
+import { LoadAccountByToken } from '@/domain/usecases/account/load-account-by-token';
 import { AddAccountRepository } from '@/data/protocols/db/account/add-account-repository';
 
 export class AccountMongoRepository

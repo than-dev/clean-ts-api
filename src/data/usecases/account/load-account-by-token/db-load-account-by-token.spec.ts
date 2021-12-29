@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/brace-style */
-import { Decrypter } from '../../../data/protocols/criptography/decrypter';
-import { AccountModel } from '../../../domain/models/account';
-import { LoadAccountByTokenRepository } from '../../protocols/db/account/load-account-by-token-repository';
+import { Decrypter } from '../../../protocols/criptography/decrypter';
+import { AccountModel } from '../../../../domain/models/account';
+import { LoadAccountByTokenRepository } from '../../../protocols/db/account/load-account-by-token-repository';
 import { DbLoadAccountByToken } from './db-load-account-by-token';
 
 describe('DbLoadAccountByToken Usecase', () => {
