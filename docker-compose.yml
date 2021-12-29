@@ -1,17 +1,20 @@
 version: '3'
 services:
     mongo:
-        container_name: mongo-container
+        container_name: mongo-clean
         image: mongo
         restart: always
         ports:
             - '27017:27017'
+
     api:
-        container_name: api-container
+        container_name: api-clean
         image: node:16.8.0
         working_dir: /usr/src/clean-node-api
         restart: always
         command: bash -c "yarn install --production && yarn start"
+        environment:
+            - MONGO_URL=mongodb://mongo:27017/clean-node-api
         volumes:
             - ./dist/:/usr/src/clean-node-api/dist/
             - ./package.json/:/usr/src/clean-node-api/package.json
