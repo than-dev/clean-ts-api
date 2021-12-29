@@ -1,5 +1,5 @@
 import { MongoHelper } from '../helpers/mongo-helper';
-import { Collection /* ObjectId */ } from 'mongodb';
+import { Collection, ObjectId } from 'mongodb';
 import { SurveyMongoRepository } from './survey-mongo-repository';
 import MockDate from 'mockdate';
 
@@ -119,13 +119,13 @@ describe('Survey Mongo Repository', () => {
             expect(survey).toBeTruthy();
         });
 
-        // it('should return null if is a invalid id', async () => {
-        //     const sut = makeSut();
-        //     const survey = await sut.loadById(
-        //         ObjectId.generate() as unknown as string
-        //     );
+        it('should return null if is a invalid id', async () => {
+            const sut = makeSut();
+            const survey = await sut.loadById(
+                ObjectId.generate() as unknown as string
+            );
 
-        //     expect(survey).toBeFalsy();
-        // });
+            expect(survey).toBeFalsy();
+        });
     });
 });
