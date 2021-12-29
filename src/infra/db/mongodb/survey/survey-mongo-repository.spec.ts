@@ -1,5 +1,5 @@
 import { MongoHelper } from '../helpers/mongo-helper';
-import { Collection } from 'mongodb';
+import { Collection /* ObjectId */ } from 'mongodb';
 import { SurveyMongoRepository } from './survey-mongo-repository';
 import MockDate from 'mockdate';
 
@@ -93,5 +93,39 @@ describe('Survey Mongo Repository', () => {
             const surveys = await sut.loadAll;
             expect(surveys.length).toBe(0);
         });
+    });
+
+    describe('loadById()', () => {
+        it('should load survey by id on success', async () => {
+            const response = await surveyCollection.insertOne({
+                question: 'any_question',
+                answers: [
+                    {
+                        image: 'any_image',
+                        answer: 'any_answer'
+                    },
+                    {
+                        answer: 'any_answer'
+                    }
+                ],
+                date: new Date()
+            });
+
+            const id = response.insertedId.toHexString();
+
+            const sut = makeSut();
+            const survey = await sut.loadById(id);
+
+            expect(survey).toBeTruthy();
+        });
+
+        // it('should return null if is a invalid id', async () => {
+        //     const sut = makeSut();
+        //     const survey = await sut.loadById(
+        //         ObjectId.generate() as unknown as string
+        //     );
+
+        //     expect(survey).toBeFalsy();
+        // });
     });
 });
