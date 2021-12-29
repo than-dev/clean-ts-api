@@ -9,7 +9,7 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
             'surveyResults'
         );
 
-        const response = await surveyCollection.findOneAndUpdate(
+        const { value } = await surveyCollection.findOneAndUpdate(
             {
                 surveyId: data.surveyId,
                 accountId: data.accountId
@@ -26,8 +26,6 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
             }
         );
 
-        return Object.assign({}, response.value, {
-            id: response.value._id
-        }) as SurveyResultModel;
+        return MongoHelper.map(value);
     }
 }

@@ -32,7 +32,7 @@ const makeSurvey = async (): Promise<SurveyModel> => {
         _id: response.insertedId
     });
 
-    return Object.assign({}, survey) as SurveyModel;
+    return MongoHelper.map(survey);
 };
 
 const makeAccount = async (): Promise<AccountModel> => {
@@ -46,7 +46,7 @@ const makeAccount = async (): Promise<AccountModel> => {
         _id: response.insertedId
     });
 
-    return Object.assign({}, account, { id: account._id }) as AccountModel;
+    return MongoHelper.map(account);
 };
 
 describe('Survey Result Mongo Repository', () => {

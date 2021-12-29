@@ -85,12 +85,14 @@ describe('Survey Mongo Repository', () => {
 
             expect(surveys.length).toBe(2);
             expect(surveys[0].question).toBe('any_question');
+            expect(surveys[0].question).toBe('any_question');
+            expect(surveys[0].id).toBeTruthy();
             expect(surveys[1].question).toBe('other_question');
         });
 
         it('should return an empty array', async () => {
             const sut = makeSut();
-            const surveys = await sut.loadAll;
+            const surveys = await sut.loadAll();
             expect(surveys.length).toBe(0);
         });
     });
@@ -117,9 +119,10 @@ describe('Survey Mongo Repository', () => {
             const survey = await sut.loadById(id);
 
             expect(survey).toBeTruthy();
+            expect(survey.id).toBeTruthy();
         });
 
-        it('should return null if is a invalid id', async () => {
+        it('should return null if a invalid id is provided', async () => {
             const sut = makeSut();
             const survey = await sut.loadById(
                 ObjectId.generate() as unknown as string
