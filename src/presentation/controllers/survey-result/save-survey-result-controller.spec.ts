@@ -8,6 +8,7 @@ import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id';
 import { InvalidParamError } from '@/presentation/errors';
 import {
     forbidden,
+    ok,
     serverError
 } from '@/presentation/helpers/http/http-helper';
 import { HttpRequest } from '@/presentation/protocols/http';
@@ -30,7 +31,7 @@ const makeFakeRequest = (): HttpRequest => ({
     accountId: 'any_account_id'
 });
 
-const makeSurveyResult = (): SurveyResultModel => ({
+const makeFakeSurveyResult = (): SurveyResultModel => ({
     id: 'valid_id',
     accountId: 'valid_account_id',
     surveyId: 'valid_survey_id',
@@ -38,7 +39,7 @@ const makeSurveyResult = (): SurveyResultModel => ({
     date: new Date()
 });
 
-const makeSurvey = (): SurveyModel => ({
+const makeFakeSurvey = (): SurveyModel => ({
     id: 'any_id',
     question: 'any_question',
     answers: [
@@ -56,7 +57,7 @@ const makeSurvey = (): SurveyModel => ({
 const makeSaveSurveyResultStub = (): SaveSurveyResult => {
     class SaveSurveyResultStub implements SaveSurveyResult {
         async save(data: SaveSurveyResultModel): Promise<SurveyResultModel> {
-            return new Promise((resolve) => resolve(makeSurveyResult()));
+            return new Promise((resolve) => resolve(makeFakeSurveyResult()));
         }
     }
 
@@ -66,7 +67,7 @@ const makeSaveSurveyResultStub = (): SaveSurveyResult => {
 const makeLoadSurveyByIdStub = (): LoadSurveyById => {
     class LoadSurveyByIdStub implements LoadSurveyById {
         async loadById(id: string): Promise<SurveyModel> {
-            return new Promise((resolve) => resolve(makeSurvey()));
+            return new Promise((resolve) => resolve(makeFakeSurvey()));
         }
     }
 
@@ -176,5 +177,13 @@ describe('SaveSurveyResult Controller', () => {
         const httpResponse = await sut.handle(makeFakeRequest());
 
         expect(httpResponse).toEqual(serverError(new Error()));
+    });
+
+    it('should return 200 on success', async () => {
+        const { sut } = makeSut();
+
+        const httpResponse = await sut.handle(makeFakeRequest());
+
+        expect(httpResponse).toEqual(ok(makeFakeSurveyResult()));
     });
 });
