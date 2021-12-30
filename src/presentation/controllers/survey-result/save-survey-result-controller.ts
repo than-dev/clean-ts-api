@@ -1,8 +1,10 @@
-import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id';
 import {
     Controller,
     HttpRequest,
-    HttpResponse
+    HttpResponse,
+    forbidden,
+    InvalidParamError,
+    LoadSurveyById
 } from './save-survey-result-controller-protocols';
 
 export class SaveSurveyResultController implements Controller {
@@ -11,7 +13,8 @@ export class SaveSurveyResultController implements Controller {
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         const { surveyId } = httpRequest.params;
 
-        await this.loadSurveyById.loadById(surveyId);
+        const survey = await this.loadSurveyById.loadById(surveyId);
+        if (!survey) return forbidden(new InvalidParamError('surveyId'));
 
         return null;
     }
