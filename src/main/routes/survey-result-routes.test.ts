@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb';
+import { Collection, ObjectId } from 'mongodb';
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper';
 import request from 'supertest';
 import app from '../config/app';
@@ -9,24 +9,27 @@ import MockDate from 'mockdate';
 let surveyCollection: Collection;
 let accountCollection: Collection;
 
-const makeAccessToken = async (role?: string): Promise<any> => {
+const makeAccessToken = async (): Promise<any> => {
     const { insertedId } = await accountCollection.insertOne({
         name: 'Nathan',
         email: 'nathan.cotrim@gmail.com',
-        password: 'n27a01t05',
-        role
+        password: 'n27a01t05'
     });
 
-    const { _id } = await accountCollection.findOne({
-        _id: insertedId
-    });
+    const accessToken = sign({ id: insertedId }, env.jwtSecret);
 
-    const accessToken = sign({ _id }, env.jwtSecret);
+    await accountCollection.updateOne(
+        {
+            _id: new ObjectId(insertedId)
+        },
+        {
+            $set: {
+                accessToken
+            }
+        }
+    );
 
-    return {
-        accessToken,
-        _id
-    };
+    return accessToken;
 };
 
 describe('Survey Result Routes', () => {
@@ -62,34 +65,31 @@ describe('Survey Result Routes', () => {
                 .expect(403);
         });
 
-        it('should return 204 on add survey with valid access token', async () => {
-            const { accessToken, _id } = await makeAccessToken('admin');
-
-            await accountCollection.updateOne(
-                {
-                    _id
-                },
-                {
-                    $set: {
-                        accessToken
+        it('should return 200 on save survey result with accessToken', async () => {
+            const surveyInsertResponse = await surveyCollection.insertOne({
+                question: 'question',
+                answers: [
+                    {
+                        answer: 'Answer 1',
+                        image: 'http://fake-image.png'
+                    },
+                    {
+                        answer: 'Answer 2'
                     }
-                }
-            );
+                ],
+                date: new Date()
+            });
+
+            const accessToken = await makeAccessToken();
+            const surveyId = surveyInsertResponse.insertedId.toHexString();
 
             await request(app)
-                .post('/api/surveys')
+                .put(`/api/surveys/${surveyId}/results`)
                 .set('x-access-token', accessToken)
                 .send({
-                    question: 'any_question',
-                    answers: [
-                        {
-                            image: 'any_image',
-                            answer: 'any_answer'
-                        }
-                    ],
-                    date: new Date()
+                    answer: 'Answer 1'
                 })
-                .expect(204);
+                .expect(200);
         });
     });
 });
