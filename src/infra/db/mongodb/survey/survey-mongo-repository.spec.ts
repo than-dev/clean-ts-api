@@ -2,6 +2,7 @@ import { MongoHelper } from '../helpers/mongo-helper';
 import { Collection, ObjectId } from 'mongodb';
 import { SurveyMongoRepository } from './survey-mongo-repository';
 import makeFakeDate from 'mockdate';
+import { mockSurveyModel, mockSurveyModels } from '@/domain/test';
 
 let surveyCollection: Collection;
 
@@ -28,19 +29,7 @@ describe('Survey Mongo Repository', () => {
     describe('add()', () => {
         it('should return an account on add success', async () => {
             const sut = makeSut();
-            await sut.add({
-                question: 'any_question',
-                answers: [
-                    {
-                        image: 'any_image',
-                        answer: 'any_answer'
-                    },
-                    {
-                        answer: 'any_answer'
-                    }
-                ],
-                date: new Date()
-            });
+            await sut.add(mockSurveyModel());
 
             const survey = await surveyCollection.findOne({
                 question: 'any_question'
@@ -51,34 +40,7 @@ describe('Survey Mongo Repository', () => {
 
     describe('loadAll()', () => {
         it('should load all surveys on success', async () => {
-            await surveyCollection.insertMany([
-                {
-                    question: 'any_question',
-                    answers: [
-                        {
-                            image: 'any_image',
-                            answer: 'any_answer'
-                        },
-                        {
-                            answer: 'any_answer'
-                        }
-                    ],
-                    date: new Date()
-                },
-                {
-                    question: 'other_question',
-                    answers: [
-                        {
-                            image: 'other_image',
-                            answer: 'other_answer'
-                        },
-                        {
-                            answer: 'other_answer'
-                        }
-                    ],
-                    date: new Date()
-                }
-            ]);
+            await surveyCollection.insertMany(mockSurveyModels());
 
             const sut = makeSut();
             const surveys = await sut.loadAll();
@@ -99,19 +61,9 @@ describe('Survey Mongo Repository', () => {
 
     describe('loadById()', () => {
         it('should load survey by id on success', async () => {
-            const response = await surveyCollection.insertOne({
-                question: 'any_question',
-                answers: [
-                    {
-                        image: 'any_image',
-                        answer: 'any_answer'
-                    },
-                    {
-                        answer: 'any_answer'
-                    }
-                ],
-                date: new Date()
-            });
+            const response = await surveyCollection.insertOne(
+                mockSurveyModel()
+            );
 
             const id = response.insertedId.toHexString();
 

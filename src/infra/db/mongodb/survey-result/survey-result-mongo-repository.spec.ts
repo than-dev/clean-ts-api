@@ -4,6 +4,7 @@ import makeFakeDate from 'mockdate';
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository';
 import { SurveyModel } from '@/domain/models/survey';
 import { AccountModel } from '@/domain/models/account';
+import { mockAddAccountParams } from '@/domain/test';
 
 let surveyCollection: Collection;
 let surveyResultCollection: Collection;
@@ -36,11 +37,7 @@ const makeSurvey = async (): Promise<SurveyModel> => {
 };
 
 const makeAccount = async (): Promise<AccountModel> => {
-    const response = await accountCollection.insertOne({
-        name: 'any_name',
-        email: 'any_email@mail.com',
-        password: 'any_password'
-    });
+    const response = await accountCollection.insertOne(mockAddAccountParams());
 
     const account = await accountCollection.findOne({
         _id: response.insertedId
