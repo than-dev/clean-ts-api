@@ -7,6 +7,7 @@ import {
 import { throwError } from '@/domain/test/';
 
 import makeFakeDate from 'mockdate';
+import { mockAddSurveyRepository } from '@/data/test';
 
 type SutTypes = {
     sut: DbAddSurvey;
@@ -24,18 +25,8 @@ const makeFakeSurveyData = (): AddSurveyParams => ({
     date: new Date()
 });
 
-const makeAddSurveyRepositoryStub = (): AddSurveyRepository => {
-    class AddSurveyRepositoryStub implements AddSurveyRepository {
-        async add(surveyData: AddSurveyParams): Promise<void> {
-            return new Promise((resolve) => resolve());
-        }
-    }
-
-    return new AddSurveyRepositoryStub();
-};
-
 const makeSut = (): SutTypes => {
-    const addSurveyRepositoryStub = makeAddSurveyRepositoryStub();
+    const addSurveyRepositoryStub = mockAddSurveyRepository();
     const sut = new DbAddSurvey(addSurveyRepositoryStub);
 
     return {

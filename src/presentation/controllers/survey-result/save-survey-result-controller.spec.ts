@@ -1,4 +1,3 @@
-import { SurveyModel } from '@/domain/models/survey';
 import { SurveyResultModel } from '@/domain/models/survey-result';
 import {
     SaveSurveyResult,
@@ -14,6 +13,7 @@ import {
 import { HttpRequest } from '@/presentation/protocols/http';
 import { SaveSurveyResultController } from './save-survey-result-controller';
 import makeFakeDate from 'mockdate';
+import { mockLoadSurveyByIdRepository } from '@/data/test';
 
 type SutTypes = {
     sut: SaveSurveyResultController;
@@ -39,21 +39,6 @@ const makeFakeSurveyResult = (): SurveyResultModel => ({
     date: new Date()
 });
 
-const makeFakeSurvey = (): SurveyModel => ({
-    id: 'any_id',
-    question: 'any_question',
-    answers: [
-        {
-            image: 'any_image',
-            answer: 'any_answer'
-        },
-        {
-            answer: 'any_answer'
-        }
-    ],
-    date: new Date()
-});
-
 const makeSaveSurveyResultStub = (): SaveSurveyResult => {
     class SaveSurveyResultStub implements SaveSurveyResult {
         async save(data: SaveSurveyResultParams): Promise<SurveyResultModel> {
@@ -64,18 +49,8 @@ const makeSaveSurveyResultStub = (): SaveSurveyResult => {
     return new SaveSurveyResultStub();
 };
 
-const makeLoadSurveyByIdStub = (): LoadSurveyById => {
-    class LoadSurveyByIdStub implements LoadSurveyById {
-        async loadById(id: string): Promise<SurveyModel> {
-            return new Promise((resolve) => resolve(makeFakeSurvey()));
-        }
-    }
-
-    return new LoadSurveyByIdStub();
-};
-
 const makeSut = (): SutTypes => {
-    const loadSurveyByIdStub = makeLoadSurveyByIdStub();
+    const loadSurveyByIdStub = mockLoadSurveyByIdRepository();
     const saveSurveyResultStub = makeSaveSurveyResultStub();
     const sut = new SaveSurveyResultController(
         loadSurveyByIdStub,
