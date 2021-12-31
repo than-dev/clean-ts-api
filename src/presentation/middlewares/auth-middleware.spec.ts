@@ -4,6 +4,7 @@ import { forbidden, ok, serverError } from '../helpers/http/http-helper';
 import { AuthMiddleware } from './auth-middleware';
 import { AccountModel } from '@/domain/models/account';
 import { LoadAccountByToken } from './auth-middleware-protocols';
+import { mockAccountModel, throwError } from '@/domain/test/';
 
 describe('Auth Middleware', () => {
     type SutTypes = {
@@ -27,7 +28,7 @@ describe('Auth Middleware', () => {
                 accessToken: string,
                 role?: string
             ): Promise<AccountModel> {
-                return new Promise((resolve) => resolve(makeFakeAccount()));
+                return new Promise((resolve) => resolve(mockAccountModel()));
             }
         }
 
@@ -38,13 +39,6 @@ describe('Auth Middleware', () => {
         headers: {
             'x-access-token': 'any_token'
         }
-    });
-
-    const makeFakeAccount = (): AccountModel => ({
-        id: 'any_id',
-        name: 'any_name',
-        email: 'any_email@mail.com',
-        password: 'any_password'
     });
 
     it('should return 403 if no x-access-token exists in headers', async () => {
@@ -88,9 +82,10 @@ describe('Auth Middleware', () => {
     it('should return 500 if LoadAccountByToken throws', async () => {
         const { sut, loadAccountByTokenStub } = makeSut();
 
-        jest.spyOn(loadAccountByTokenStub, 'loadByToken').mockReturnValueOnce(
-            new Promise((resolve, reject) => reject(new Error()))
-        );
+        jest.spyOn(
+            loadAccountByTokenStub,
+            'loadByToken'
+        ).mockImplementationOnce(throwError);
 
         const httpResponse = await sut.handle(makeFakeRequest());
 

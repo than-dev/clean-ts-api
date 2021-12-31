@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import MockDate from 'mockdate';
+import makeFakeDate from 'mockdate';
 import { DbLoadSurveys } from './db-load-surveys';
 import {
     LoadSurveysRepository,
     SurveyModel
 } from './db-load-surveys-protocols';
+import { throwError } from '@/domain/test/';
 
 type SutTypes = {
     sut: DbLoadSurveys;
@@ -60,11 +61,11 @@ const makeSut = (): SutTypes => {
 
 describe('DbLoadSurveys', () => {
     beforeAll(() => {
-        MockDate.set(new Date());
+        makeFakeDate.set(new Date());
     });
 
     afterAll(() => {
-        MockDate.reset();
+        makeFakeDate.reset();
     });
 
     it('should call LoadSurveysRepository', async () => {
@@ -88,8 +89,8 @@ describe('DbLoadSurveys', () => {
     it('should throw if LoadSurveysRepository throws', async () => {
         const { sut, loadSurveysRepositoryStub } = makeSut();
 
-        jest.spyOn(loadSurveysRepositoryStub, 'loadAll').mockReturnValueOnce(
-            new Promise((resolve, reject) => reject(new Error()))
+        jest.spyOn(loadSurveysRepositoryStub, 'loadAll').mockImplementationOnce(
+            throwError
         );
 
         const promise = sut.load();

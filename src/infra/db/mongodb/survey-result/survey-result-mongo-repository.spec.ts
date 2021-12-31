@@ -1,6 +1,6 @@
 import { MongoHelper } from '../helpers/mongo-helper';
 import { Collection } from 'mongodb';
-import MockDate from 'mockdate';
+import makeFakeDate from 'mockdate';
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository';
 import { SurveyModel } from '@/domain/models/survey';
 import { AccountModel } from '@/domain/models/account';
@@ -51,12 +51,12 @@ const makeAccount = async (): Promise<AccountModel> => {
 
 describe('Survey Result Mongo Repository', () => {
     beforeAll(async () => {
-        MockDate.set(new Date());
+        makeFakeDate.set(new Date());
         await MongoHelper.connect(process.env.MONGO_URL);
     });
 
     afterAll(async () => {
-        MockDate.reset();
+        makeFakeDate.reset();
         await MongoHelper.disconnect();
     });
 

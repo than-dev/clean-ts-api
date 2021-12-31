@@ -3,7 +3,9 @@ import { SaveSurveyResultRepository } from '@/data/protocols/db/survey-result/sa
 import { SurveyResultModel } from '@/domain/models/survey-result';
 import { SaveSurveyResultParams } from '@/domain/usecases/survey-result/save-survey-result';
 import { DbSaveSurveyResult } from './db-save-survey-result';
-import MockDate from 'mockdate';
+import { throwError } from '@/domain/test/';
+
+import makeFakeDate from 'mockdate';
 
 type SutTypes = {
     sut: DbSaveSurveyResult;
@@ -42,11 +44,11 @@ const makeSut = (): SutTypes => {
 
 describe('DbSaveSurveyResult Usecase', () => {
     beforeAll(() => {
-        MockDate.set(new Date());
+        makeFakeDate.set(new Date());
     });
 
     afterAll(() => {
-        MockDate.reset();
+        makeFakeDate.reset();
     });
 
     it('should call SaveSurveyResultRepository with correct values', async () => {
@@ -61,9 +63,10 @@ describe('DbSaveSurveyResult Usecase', () => {
 
     it('should throws if SaveSurveyResultRepository throws', async () => {
         const { sut, saveSurveyResultRepositoryStub } = makeSut();
-        jest.spyOn(saveSurveyResultRepositoryStub, 'save').mockReturnValueOnce(
-            new Promise((resolve, reject) => reject(new Error()))
-        );
+        jest.spyOn(
+            saveSurveyResultRepositoryStub,
+            'save'
+        ).mockImplementationOnce(throwError);
 
         const promise = sut.save(makeFakeSurveyResultData());
 

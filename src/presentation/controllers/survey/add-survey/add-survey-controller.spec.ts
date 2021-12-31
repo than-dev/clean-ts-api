@@ -10,7 +10,9 @@ import {
     noContent,
     serverError
 } from '../../../helpers/http/http-helper';
-import MockDate from 'mockdate';
+import { throwError } from '@/domain/test/';
+
+import makeFakeDate from 'mockdate';
 
 type SutTypes = {
     sut: AddSurveyController;
@@ -65,11 +67,11 @@ const makeSut = (): SutTypes => {
 
 describe('Add Survey Controller', () => {
     beforeAll(() => {
-        MockDate.set(new Date());
+        makeFakeDate.set(new Date());
     });
 
     afterAll(() => {
-        MockDate.reset();
+        makeFakeDate.reset();
     });
 
     it('should call Validation with correct values', async () => {
@@ -104,9 +106,7 @@ describe('Add Survey Controller', () => {
 
     it('should return 500 if AddSurvey throws', async () => {
         const { sut, addSurveyStub } = makeSut();
-        jest.spyOn(addSurveyStub, 'add').mockReturnValueOnce(
-            new Promise((resolve, reject) => reject(new Error()))
-        );
+        jest.spyOn(addSurveyStub, 'add').mockImplementationOnce(throwError);
 
         const httpResponse = await sut.handle(makeFakeRequest());
 

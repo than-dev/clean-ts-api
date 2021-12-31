@@ -1,7 +1,7 @@
 import { MongoHelper } from '../helpers/mongo-helper';
 import { Collection, ObjectId } from 'mongodb';
 import { SurveyMongoRepository } from './survey-mongo-repository';
-import MockDate from 'mockdate';
+import makeFakeDate from 'mockdate';
 
 let surveyCollection: Collection;
 
@@ -11,12 +11,12 @@ const makeSut = (): SurveyMongoRepository => {
 
 describe('Survey Mongo Repository', () => {
     beforeAll(async () => {
-        MockDate.set(new Date());
+        makeFakeDate.set(new Date());
         await MongoHelper.connect(process.env.MONGO_URL);
     });
 
     afterAll(async () => {
-        MockDate.reset();
+        makeFakeDate.reset();
         await MongoHelper.disconnect();
     });
 

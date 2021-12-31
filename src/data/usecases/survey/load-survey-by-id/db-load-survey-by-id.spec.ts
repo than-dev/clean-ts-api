@@ -1,7 +1,9 @@
 import { SurveyModel } from '@/domain/models/survey';
-import MockDate from 'mockdate';
+import makeFakeDate from 'mockdate';
 import { LoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey-by-id-repository';
 import { DbLoadSurveyById } from './db-load-survey-by-id';
+
+import { throwError } from '@/domain/test/';
 
 type SutTypes = {
     sut: DbLoadSurveyById;
@@ -42,11 +44,11 @@ const makeSut = (): SutTypes => {
 
 describe('DbLoadSurveys', () => {
     beforeAll(() => {
-        MockDate.set(new Date());
+        makeFakeDate.set(new Date());
     });
 
     afterAll(() => {
-        MockDate.reset();
+        makeFakeDate.reset();
     });
 
     it('should call LoadSurveyByIdRepository', async () => {
@@ -73,9 +75,7 @@ describe('DbLoadSurveys', () => {
         jest.spyOn(
             loadSurveyByIdRepositoryStub,
             'loadById'
-        ).mockReturnValueOnce(
-            new Promise((resolve, reject) => reject(new Error()))
-        );
+        ).mockImplementationOnce(throwError);
 
         const promise = sut.loadById('any_id');
         await expect(promise).rejects.toThrow();

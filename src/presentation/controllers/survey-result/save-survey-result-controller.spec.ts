@@ -13,7 +13,7 @@ import {
 } from '@/presentation/helpers/http/http-helper';
 import { HttpRequest } from '@/presentation/protocols/http';
 import { SaveSurveyResultController } from './save-survey-result-controller';
-import MockDate from 'mockdate';
+import makeFakeDate from 'mockdate';
 
 type SutTypes = {
     sut: SaveSurveyResultController;
@@ -32,10 +32,10 @@ const makeFakeRequest = (): HttpRequest => ({
 });
 
 const makeFakeSurveyResult = (): SurveyResultModel => ({
-    id: 'valid_id',
-    accountId: 'valid_account_id',
-    surveyId: 'valid_survey_id',
-    answer: 'valid_answer',
+    id: 'any_id',
+    accountId: 'any_account_id',
+    surveyId: 'any_survey_id',
+    answer: 'any_answer',
     date: new Date()
 });
 
@@ -91,11 +91,11 @@ const makeSut = (): SutTypes => {
 
 describe('SaveSurveyResult Controller', () => {
     beforeAll(async () => {
-        MockDate.set(new Date());
+        makeFakeDate.set(new Date());
     });
 
     afterAll(async () => {
-        MockDate.reset();
+        makeFakeDate.reset();
     });
 
     it('should call LoadSurveyById with correct values', async () => {
