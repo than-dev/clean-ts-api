@@ -6,7 +6,7 @@ import {
     UpdateAccessTokenRepository
 } from '@/data/usecases/account/authentication/db-authentication-protocols';
 import { AccountModel } from '@/domain/models/account';
-import { AddAccountModel } from '@/domain/usecases/account/add-account';
+import { AddAccountParams } from '@/domain/usecases/account/add-account';
 import { LoadAccountByToken } from '@/domain/usecases/account/load-account-by-token';
 import { AddAccountRepository } from '@/data/protocols/db/account/add-account-repository';
 
@@ -17,7 +17,7 @@ export class AccountMongoRepository
         UpdateAccessTokenRepository,
         LoadAccountByToken
 {
-    async add(accountData: AddAccountModel): Promise<AccountModel> {
+    async add(accountData: AddAccountParams): Promise<AccountModel> {
         const accountCollection = await MongoHelper.getCollection('accounts');
         const { insertedId } = await accountCollection.insertOne(accountData);
 
