@@ -14,6 +14,7 @@ import { HttpRequest } from '@/presentation/protocols/http';
 import { SaveSurveyResultController } from './save-survey-result-controller';
 import makeFakeDate from 'mockdate';
 import { mockLoadSurveyByIdRepository } from '@/data/test';
+import { mockSurveyResultModel } from '@/domain/test';
 
 type SutTypes = {
     sut: SaveSurveyResultController;
@@ -31,18 +32,10 @@ const makeFakeRequest = (): HttpRequest => ({
     accountId: 'any_account_id'
 });
 
-const makeFakeSurveyResult = (): SurveyResultModel => ({
-    id: 'any_id',
-    accountId: 'any_account_id',
-    surveyId: 'any_survey_id',
-    answer: 'any_answer',
-    date: new Date()
-});
-
 const makeSaveSurveyResultStub = (): SaveSurveyResult => {
     class SaveSurveyResultStub implements SaveSurveyResult {
         async save(data: SaveSurveyResultParams): Promise<SurveyResultModel> {
-            return new Promise((resolve) => resolve(makeFakeSurveyResult()));
+            return new Promise((resolve) => resolve(mockSurveyResultModel()));
         }
     }
 
@@ -159,6 +152,6 @@ describe('SaveSurveyResult Controller', () => {
 
         const httpResponse = await sut.handle(makeFakeRequest());
 
-        expect(httpResponse).toEqual(ok(makeFakeSurveyResult()));
+        expect(httpResponse).toEqual(ok(mockSurveyResultModel()));
     });
 });
