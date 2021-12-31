@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/brace-style */
 import { Decrypter } from '../../../protocols/criptography/decrypter';
-import { AccountModel } from '../../../../domain/models/account';
 import { LoadAccountByTokenRepository } from '../../../protocols/db/account/load-account-by-token-repository';
 import { DbLoadAccountByToken } from './db-load-account-by-token';
 import { mockAccountModel, throwError } from '@/domain/test/';
-import { mockDecrypter } from '@/data/test';
+import { mockDecrypter, mockLoadAccountByTokenRepository } from '@/data/test';
 
 describe('DbLoadAccountByToken Usecase', () => {
     type SutTypes = {
@@ -14,28 +13,10 @@ describe('DbLoadAccountByToken Usecase', () => {
         loadAccountByTokenRepositoryStub: LoadAccountByTokenRepository;
     };
 
-    const makeLoadAccountByTokenRepositoryStub =
-        (): LoadAccountByTokenRepository => {
-            class LoadAccountByTokenRepositoryStub
-                implements LoadAccountByTokenRepository
-            {
-                async loadByToken(
-                    token: string,
-                    role?: string
-                ): Promise<AccountModel> {
-                    return new Promise((resolve) =>
-                        resolve(mockAccountModel())
-                    );
-                }
-            }
-
-            return new LoadAccountByTokenRepositoryStub();
-        };
-
     const makeSut = (): SutTypes => {
         const decrypterStub = mockDecrypter();
         const loadAccountByTokenRepositoryStub =
-            makeLoadAccountByTokenRepositoryStub();
+            mockLoadAccountByTokenRepository();
         const sut = new DbLoadAccountByToken(
             decrypterStub,
             loadAccountByTokenRepositoryStub

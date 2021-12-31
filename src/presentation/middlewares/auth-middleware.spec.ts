@@ -2,9 +2,9 @@ import { HttpRequest } from '../protocols/http';
 import { AccessDeniedError } from '../errors/access-denied-error';
 import { forbidden, ok, serverError } from '../helpers/http/http-helper';
 import { AuthMiddleware } from './auth-middleware';
-import { AccountModel } from '@/domain/models/account';
 import { LoadAccountByToken } from './auth-middleware-protocols';
-import { mockAccountModel, throwError } from '@/domain/test/';
+import { throwError } from '@/domain/test/';
+import { mockLoadAccountByTokenRepository } from '@/data/test';
 
 describe('Auth Middleware', () => {
     type SutTypes = {
@@ -13,26 +13,13 @@ describe('Auth Middleware', () => {
     };
 
     const makeSut = (role?: string): SutTypes => {
-        const loadAccountByTokenStub = makeLoadAccountByTokenStub();
+        const loadAccountByTokenStub = mockLoadAccountByTokenRepository();
         const sut = new AuthMiddleware(loadAccountByTokenStub, role);
 
         return {
             sut,
             loadAccountByTokenStub
         };
-    };
-
-    const makeLoadAccountByTokenStub = (): LoadAccountByToken => {
-        class LoadAccountByTokenStub implements LoadAccountByToken {
-            async loadByToken(
-                accessToken: string,
-                role?: string
-            ): Promise<AccountModel> {
-                return new Promise((resolve) => resolve(mockAccountModel()));
-            }
-        }
-
-        return new LoadAccountByTokenStub();
     };
 
     const makeFakeRequest = (): HttpRequest => ({
