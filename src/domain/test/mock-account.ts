@@ -9,7 +9,7 @@ export const mockAccountModel = (): AccountModel => ({
     password: 'hashed_password'
 });
 
-export const mockAccountDataParams = (): AddAccountParams => ({
+export const mockAddAccountParams = (): AddAccountParams => ({
     name: 'any_name',
     email: 'any_email@mail.com',
     password: 'any_password'
