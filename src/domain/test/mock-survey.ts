@@ -1,6 +1,6 @@
 import { SurveyModel } from '../models/survey';
 
-export const mockSurvey = (): SurveyModel => ({
+export const mockSurveyModel = (): SurveyModel => ({
     id: 'any_id',
     question: 'any_question',
     answers: [
@@ -12,7 +12,7 @@ export const mockSurvey = (): SurveyModel => ({
     date: new Date()
 });
 
-export const mockSurveys = (): SurveyModel[] => {
+export const mockSurveyModels = (): SurveyModel[] => {
     return [
         {
             id: 'any_id',

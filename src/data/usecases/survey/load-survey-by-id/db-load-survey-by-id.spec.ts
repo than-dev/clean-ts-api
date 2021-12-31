@@ -2,7 +2,7 @@ import makeFakeDate from 'mockdate';
 import { LoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey-by-id-repository';
 import { DbLoadSurveyById } from './db-load-survey-by-id';
 
-import { mockSurvey, throwError } from '@/domain/test/';
+import { mockSurveyModel, throwError } from '@/domain/test/';
 import { mockLoadSurveyByIdRepository } from '@/data/test';
 
 type SutTypes = {
@@ -45,7 +45,7 @@ describe('DbLoadSurveys', () => {
     it('should return Survey on success', async () => {
         const { sut } = makeSut();
         const survey = await sut.loadById('any_id');
-        expect(survey).toEqual(mockSurvey());
+        expect(survey).toEqual(mockSurveyModel());
     });
 
     it('should throw if LoadSurveyByIdRepository throws', async () => {

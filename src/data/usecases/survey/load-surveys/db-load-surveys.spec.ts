@@ -2,7 +2,7 @@
 import makeFakeDate from 'mockdate';
 import { DbLoadSurveys } from './db-load-surveys';
 import { LoadSurveysRepository } from './db-load-surveys-protocols';
-import { mockSurveys, throwError } from '@/domain/test/';
+import { mockSurveyModels, throwError } from '@/domain/test/';
 import { mockLoadSurveysRepository } from '@/data/test';
 
 type SutTypes = {
@@ -44,7 +44,7 @@ describe('DbLoadSurveys', () => {
 
         const surveys = await sut.load();
 
-        expect(surveys).toEqual(mockSurveys());
+        expect(surveys).toEqual(mockSurveyModels());
     });
 
     it('should throw if LoadSurveysRepository throws', async () => {
