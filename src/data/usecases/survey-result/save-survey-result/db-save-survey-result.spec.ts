@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { SaveSurveyResultRepository } from '@/data/protocols/db/survey-result/save-survey-result-repository';
 import { DbSaveSurveyResult } from './db-save-survey-result';
-import { mockSurveyResultModel, throwError } from '@/domain/test/';
+import { mockSurveyResultModel, throwError } from '@/domain/test';
 
 import makeFakeDate from 'mockdate';
 import { mockSaveSurveyResultRepository } from '@/data/test';

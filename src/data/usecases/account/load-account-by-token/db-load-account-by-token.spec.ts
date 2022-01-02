@@ -3,7 +3,7 @@
 import { Decrypter } from '../../../protocols/criptography/decrypter';
 import { LoadAccountByTokenRepository } from '../../../protocols/db/account/load-account-by-token-repository';
 import { DbLoadAccountByToken } from './db-load-account-by-token';
-import { mockAccountModel, throwError } from '@/domain/test/';
+import { mockAccountModel, throwError } from '@/domain/test';
 import { mockDecrypter, mockLoadAccountByTokenRepository } from '@/data/test';
 
 describe('DbLoadAccountByToken Usecase', () => {

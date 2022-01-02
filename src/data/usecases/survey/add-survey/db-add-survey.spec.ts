@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { DbAddSurvey } from './db-add-survey';
 import { AddSurveyRepository } from './db-add-survey-protocols';
-import { mockSurveyModel, throwError } from '@/domain/test/';
+import { mockSurveyModel, throwError } from '@/domain/test';
 
 import makeFakeDate from 'mockdate';
 import { mockAddSurveyRepository } from '@/data/test';

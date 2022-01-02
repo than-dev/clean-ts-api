@@ -7,7 +7,7 @@ import {
     UpdateAccessTokenRepository
 } from './db-authentication-protocols';
 
-import { mockAuthentication, throwError } from '@/domain/test/';
+import { mockAuthentication, throwError } from '@/domain/test';
 import {
     mockEncrypter,
     mockHashComparer,

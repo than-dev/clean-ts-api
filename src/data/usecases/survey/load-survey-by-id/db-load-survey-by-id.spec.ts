@@ -2,7 +2,7 @@ import makeFakeDate from 'mockdate';
 import { LoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey-by-id-repository';
 import { DbLoadSurveyById } from './db-load-survey-by-id';
 
-import { mockSurveyModel, throwError } from '@/domain/test/';
+import { mockSurveyModel, throwError } from '@/domain/test';
 import { mockLoadSurveyByIdRepository } from '@/data/test';
 
 type SutTypes = {

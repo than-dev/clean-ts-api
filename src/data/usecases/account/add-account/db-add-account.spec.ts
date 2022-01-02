@@ -11,7 +11,7 @@ import {
     mockAddAccountParams,
     mockAccountModel,
     throwError
-} from '@/domain/test/';
+} from '@/domain/test';
 import { mockAddAccountRepository, mockHasher } from '@/data/test';
 
 const mockLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
