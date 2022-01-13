@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { SaveSurveyResultRepository } from '@/data/protocols/db/survey-result/save-survey-result-repository';
 import { DbSaveSurveyResult } from './db-save-survey-result';
-import { mockSurveyResultModel, throwError } from '@/domain/test';
+import {
+    mockSaveSurveyResultParams,
+    mockSurveyResultModel,
+    throwError
+} from '@/domain/test';
 
 import makeFakeDate from 'mockdate';
 import { mockSaveSurveyResultRepository } from '@/data/test';
@@ -34,7 +38,7 @@ describe('DbSaveSurveyResult Usecase', () => {
         const { sut, saveSurveyResultRepositoryStub } = makeSut();
         const saveSpy = jest.spyOn(saveSurveyResultRepositoryStub, 'save');
 
-        const surveyResultData = mockSurveyResultModel();
+        const surveyResultData = mockSaveSurveyResultParams();
         await sut.save(surveyResultData);
 
         expect(saveSpy).toHaveBeenCalledWith(surveyResultData);
@@ -47,7 +51,7 @@ describe('DbSaveSurveyResult Usecase', () => {
             'save'
         ).mockImplementationOnce(throwError);
 
-        const promise = sut.save(mockSurveyResultModel());
+        const promise = sut.save(mockSaveSurveyResultParams());
 
         expect(promise).rejects.toThrow();
     });
@@ -55,7 +59,7 @@ describe('DbSaveSurveyResult Usecase', () => {
     it('should return a SurveyResult on success', async () => {
         const { sut } = makeSut();
 
-        const surveyResultData = mockSurveyResultModel();
+        const surveyResultData = mockSaveSurveyResultParams();
         const survey = await sut.save(surveyResultData);
 
         expect(survey).toEqual(mockSurveyResultModel());

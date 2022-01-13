@@ -17,9 +17,17 @@ export class QueryBuilder {
         return this;
     }
 
+    sort(data: object): QueryBuilder {
+        this.query.push({
+            $sort: data
+        });
+
+        return this;
+    }
+
     unwind(data: object): QueryBuilder {
         this.query.push({
-            $group: data
+            $unwind: data
         });
 
         return this;
@@ -27,7 +35,7 @@ export class QueryBuilder {
 
     lookup(data: object): QueryBuilder {
         this.query.push({
-            $group: data
+            $lookup: data
         });
 
         return this;
@@ -35,7 +43,7 @@ export class QueryBuilder {
 
     project(data: object): QueryBuilder {
         this.query.push({
-            $group: data
+            $project: data
         });
 
         return this;
@@ -43,7 +51,7 @@ export class QueryBuilder {
 
     addFields(data: object): QueryBuilder {
         this.query.push({
-            $group: data
+            $addFields: data
         });
 
         return this;
