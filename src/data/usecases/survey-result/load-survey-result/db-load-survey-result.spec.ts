@@ -3,7 +3,7 @@
 import { DbLoadSurveyResult } from './db-load-survey-result';
 import { LoadSurveyResultRepository } from '@/data/protocols/db/survey-result/load-survey-result';
 import { mockLoadSurveyResultRepositoryStub } from '@/data/test/mock-db-load-survey-result';
-import { throwError } from '@/domain/test';
+import { mockSurveyResultModel, throwError } from '@/domain/test';
 
 type SutTypes = {
     sut: DbLoadSurveyResult;
@@ -43,5 +43,12 @@ describe('DbLoadSurveyResult UseCase', () => {
         const promise = sut.load('any_survey_id');
 
         expect(promise).rejects.toThrow();
+    });
+
+    it('should return surveyResultModel on success', async () => {
+        const { sut } = makeSut();
+        const surveyResult = await sut.load('any_survey_id');
+
+        expect(surveyResult).toEqual(mockSurveyResultModel());
     });
 });
