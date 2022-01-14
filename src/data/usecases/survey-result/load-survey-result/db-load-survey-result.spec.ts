@@ -2,7 +2,7 @@
 
 import { DbLoadSurveyResult } from './db-load-survey-result';
 import { LoadSurveyResultRepository } from '@/data/protocols/db/survey-result/load-survey-result';
-import { mockLoadSurveyResultRepositoryStub } from '@/data/test/mock-db-load-survey-result';
+import { mockLoadSurveyResultRepository } from '@/data/test/mock-db-load-survey-result';
 import { mockSurveyResultModel, throwError } from '@/domain/test';
 
 type SutTypes = {
@@ -11,7 +11,7 @@ type SutTypes = {
 };
 
 const makeSut = (): SutTypes => {
-    const loadSurveyResultRepositoryStub = mockLoadSurveyResultRepositoryStub();
+    const loadSurveyResultRepositoryStub = mockLoadSurveyResultRepository();
     const sut = new DbLoadSurveyResult(loadSurveyResultRepositoryStub);
 
     return {

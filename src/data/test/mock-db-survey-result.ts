@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/brace-style */
-import { SurveyResultModel } from '@/domain/models/survey-result';
-import { mockSurveyResultModel } from '@/domain/test';
 import { SaveSurveyResultParams } from '@/domain/usecases/survey-result/save-survey-result';
 import { SaveSurveyResultRepository } from '../protocols/db/survey-result/save-survey-result-repository';
 
@@ -9,12 +7,8 @@ export const mockSaveSurveyResultRepository =
         class SaveSurveyResultRepositoryStub
             implements SaveSurveyResultRepository
         {
-            async save(
-                data: SaveSurveyResultParams
-            ): Promise<SurveyResultModel> {
-                return new Promise((resolve) =>
-                    resolve(mockSurveyResultModel())
-                );
+            async save(data: SaveSurveyResultParams): Promise<void> {
+                return new Promise((resolve) => resolve());
             }
         }
 

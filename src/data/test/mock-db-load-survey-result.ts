@@ -4,7 +4,7 @@ import { mockSurveyResultModel } from '@/domain/test';
 import { LoadSurveyResultRepository } from '../protocols/db/survey-result/load-survey-result';
 import { SurveyResultModel } from '../usecases/survey-result/save-survey-result/db-save-survey-result-protocols';
 
-export const mockLoadSurveyResultRepositoryStub =
+export const mockLoadSurveyResultRepository =
     (): LoadSurveyResultRepository => {
         class LoadSurveyResultRepositoryStub
             implements LoadSurveyResultRepository
