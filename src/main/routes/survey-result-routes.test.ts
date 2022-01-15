@@ -1,10 +1,12 @@
-import { Collection, ObjectId } from 'mongodb';
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper';
-import request from 'supertest';
+
 import app from '../config/app';
-import { sign } from 'jsonwebtoken';
 import env from '../config/env';
+
+import { Collection, ObjectId } from 'mongodb';
+import { sign } from 'jsonwebtoken';
 import mockDate from 'mockdate';
+import request from 'supertest';
 
 let surveyCollection: Collection;
 let accountCollection: Collection;
@@ -100,31 +102,25 @@ describe('Survey Result Routes', () => {
                 .expect(403);
         });
 
-        // it('should return 200 on save survey result with accessToken', async () => {
-        //     const surveyInsertResponse = await surveyCollection.insertOne({
-        //         question: 'question',
-        //         answers: [
-        //             {
-        //                 answer: 'Answer 1',
-        //                 image: 'http://fake-image.png'
-        //             },
-        //             {
-        //                 answer: 'Answer 2'
-        //             }
-        //         ],
-        //         date: new Date()
-        //     });
+        it('should return 200 on load survey result with accessToken', async () => {
+            const surveyInsertResponse = await surveyCollection.insertOne({
+                question: 'question',
+                answers: [
+                    {
+                        answer: 'Answer 1',
+                        image: 'http://fake-image.png'
+                    }
+                ],
+                date: new Date()
+            });
 
-        //     const accessToken = await makeAccessToken();
-        //     const surveyId = surveyInsertResponse.insertedId.toHexString();
+            const accessToken = await makeAccessToken();
+            const surveyId = surveyInsertResponse.insertedId.toHexString();
 
-        //     await request(app)
-        //         .put(`/api/surveys/${surveyId}/results`)
-        //         .set('x-access-token', accessToken)
-        //         .send({
-        //             answer: 'Answer 1'
-        //         })
-        //         .expect(200);
-        // });
+            await request(app)
+                .get(`/api/surveys/${surveyId}/results`)
+                .set('x-access-token', accessToken)
+                .expect(200);
+        });
     });
 });
