@@ -13,7 +13,7 @@ module.exports = {
     'protocols',
     'main',
     'test',
-    'src/infra/db/mongodb/helpers/query-builder.ts'
+    'query-builder.ts'
   ],
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1'
