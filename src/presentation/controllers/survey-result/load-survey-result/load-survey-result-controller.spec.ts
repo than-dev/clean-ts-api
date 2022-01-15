@@ -1,8 +1,10 @@
 import { mockLoadSurveyByIdRepository } from '@/data/test';
 import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id';
+import { HttpRequest } from '@/presentation/protocols/http';
 import { LoadSurveyResultController } from './load-survey-result-controller';
 import {
-    HttpRequest,
+    forbidden,
+    InvalidParamError,
     serverError
 } from './load-survey-result-controller-protocols';
 
@@ -45,8 +47,29 @@ describe('LoadSurveyResult Controller', () => {
             Promise.reject(new Error())
         );
 
-        const response = await sut.handle(mockRequest());
+        const httpResponse = await sut.handle(mockRequest());
 
-        expect(response).toEqual(serverError(new Error()));
+        expect(httpResponse).toEqual(serverError(new Error()));
     });
+
+    it('should return 403 if LoadSurveyById returns null', async () => {
+        const { sut, loadSurveyByIdStub } = makeSut();
+        jest.spyOn(loadSurveyByIdStub, 'loadById').mockReturnValueOnce(
+            Promise.resolve(null)
+        );
+
+        const httpResponse = await sut.handle(mockRequest());
+
+        expect(httpResponse).toEqual(
+            forbidden(new InvalidParamError('surveyId'))
+        );
+    });
+
+    // it('should return 200 on success', async () => {
+    //     const { sut } = makeSut();
+
+    //     const httpResponse = await sut.handle(mockRequest());
+
+    //     expect(httpResponse).toEqual(ok(mockSurveyResultModel()));
+    // });
 });
