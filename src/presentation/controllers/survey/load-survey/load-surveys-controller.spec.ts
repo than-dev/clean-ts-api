@@ -7,7 +7,7 @@ import {
 } from './load-surveys-controller-protocols';
 import { mockSurveyModels, throwError } from '@/domain/test';
 
-import makeFakeDate from 'mockdate';
+import mockDate from 'mockdate';
 import { mockLoadSurveys } from '@/presentation/test';
 
 type SutTypes = {
@@ -27,11 +27,11 @@ const makeSut = (): SutTypes => {
 
 describe('LoadSurveys Controller', () => {
     beforeAll(() => {
-        makeFakeDate.set(new Date());
+        mockDate.set(new Date());
     });
 
     afterAll(() => {
-        makeFakeDate.reset();
+        mockDate.reset();
     });
 
     it('should call LoadSurveys with correct values', async () => {

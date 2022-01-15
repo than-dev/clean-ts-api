@@ -8,7 +8,7 @@ import {
 } from '@/presentation/helpers/http/http-helper';
 import { HttpRequest } from '@/presentation/protocols/http';
 import { SaveSurveyResultController } from './save-survey-result-controller';
-import makeFakeDate from 'mockdate';
+import mockDate from 'mockdate';
 import { mockLoadSurveyByIdRepository } from '@/data/test';
 import { mockSurveyResultModel } from '@/domain/test';
 import { mockSaveSurveyResult } from '@/presentation/test';
@@ -46,11 +46,11 @@ const makeSut = (): SutTypes => {
 
 describe('SaveSurveyResult Controller', () => {
     beforeAll(async () => {
-        makeFakeDate.set(new Date());
+        mockDate.set(new Date());
     });
 
     afterAll(async () => {
-        makeFakeDate.reset();
+        mockDate.reset();
     });
 
     it('should call LoadSurveyById with correct values', async () => {

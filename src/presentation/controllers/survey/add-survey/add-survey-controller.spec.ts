@@ -11,7 +11,7 @@ import {
 } from '../../../helpers/http/http-helper';
 import { throwError } from '@/domain/test';
 
-import makeFakeDate from 'mockdate';
+import mockDate from 'mockdate';
 import { mockAddSurvey, mockValidation } from '@/presentation/test';
 
 type SutTypes = {
@@ -47,11 +47,11 @@ const makeSut = (): SutTypes => {
 
 describe('Add Survey Controller', () => {
     beforeAll(() => {
-        makeFakeDate.set(new Date());
+        mockDate.set(new Date());
     });
 
     afterAll(() => {
-        makeFakeDate.reset();
+        mockDate.reset();
     });
 
     it('should call Validation with correct values', async () => {

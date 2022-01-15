@@ -4,7 +4,7 @@ import request from 'supertest';
 import app from '../config/app';
 import { sign } from 'jsonwebtoken';
 import env from '../config/env';
-import makeFakeDate from 'mockdate';
+import mockDate from 'mockdate';
 
 let surveyCollection: Collection;
 let accountCollection: Collection;
@@ -31,12 +31,12 @@ const makeAccessToken = async (role?: string): Promise<any> => {
 
 describe('Survey Routes', () => {
     beforeAll(async () => {
-        makeFakeDate.set(new Date());
+        mockDate.set(new Date());
         await MongoHelper.connect(process.env.MONGO_URL);
     });
 
     afterAll(() => {
-        makeFakeDate.reset();
+        mockDate.reset();
     });
 
     afterAll(async () => {

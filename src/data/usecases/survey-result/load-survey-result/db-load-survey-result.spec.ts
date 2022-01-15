@@ -7,7 +7,7 @@ import { mockLoadSurveyByIdRepository } from '@/data/test';
 import { DbLoadSurveyResult } from './db-load-survey-result';
 import { LoadSurveyByIdRepository } from '../../survey/load-survey-by-id/db-load-survey-by-id-protocols';
 
-import makeFakeDate from 'mockdate';
+import mockDate from 'mockdate';
 
 type SutTypes = {
     sut: DbLoadSurveyResult;
@@ -32,11 +32,11 @@ const makeSut = (): SutTypes => {
 
 describe('DbLoadSurveyResult UseCase', () => {
     beforeAll(() => {
-        makeFakeDate.set(new Date());
+        mockDate.set(new Date());
     });
 
     afterAll(() => {
-        makeFakeDate.reset();
+        mockDate.reset();
     });
 
     it('should call LoadSurveyResultRepository with correct values', async () => {

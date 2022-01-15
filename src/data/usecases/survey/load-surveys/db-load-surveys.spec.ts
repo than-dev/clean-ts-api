@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import makeFakeDate from 'mockdate';
+import mockDate from 'mockdate';
 import { DbLoadSurveys } from './db-load-surveys';
 import { LoadSurveysRepository } from './db-load-surveys-protocols';
 import { mockSurveyModels, throwError } from '@/domain/test';
@@ -22,11 +22,11 @@ const makeSut = (): SutTypes => {
 
 describe('DbLoadSurveys', () => {
     beforeAll(() => {
-        makeFakeDate.set(new Date());
+        mockDate.set(new Date());
     });
 
     afterAll(() => {
-        makeFakeDate.reset();
+        mockDate.reset();
     });
 
     it('should call LoadSurveysRepository', async () => {

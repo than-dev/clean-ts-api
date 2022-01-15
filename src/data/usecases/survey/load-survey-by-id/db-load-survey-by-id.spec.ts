@@ -1,4 +1,4 @@
-import makeFakeDate from 'mockdate';
+import mockDate from 'mockdate';
 import { LoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey-by-id-repository';
 import { DbLoadSurveyById } from './db-load-survey-by-id';
 
@@ -22,11 +22,11 @@ const makeSut = (): SutTypes => {
 
 describe('DbLoadSurveys', () => {
     beforeAll(() => {
-        makeFakeDate.set(new Date());
+        mockDate.set(new Date());
     });
 
     afterAll(() => {
-        makeFakeDate.reset();
+        mockDate.reset();
     });
 
     it('should call LoadSurveyByIdRepository', async () => {

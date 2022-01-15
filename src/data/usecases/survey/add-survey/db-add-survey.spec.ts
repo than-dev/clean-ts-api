@@ -3,7 +3,7 @@ import { DbAddSurvey } from './db-add-survey';
 import { AddSurveyRepository } from './db-add-survey-protocols';
 import { mockSurveyModel, throwError } from '@/domain/test';
 
-import makeFakeDate from 'mockdate';
+import mockDate from 'mockdate';
 import { mockAddSurveyRepository } from '@/data/test';
 
 type SutTypes = {
@@ -23,11 +23,11 @@ const makeSut = (): SutTypes => {
 
 describe('DbAddSurvey Usecase', () => {
     beforeAll(() => {
-        makeFakeDate.set(new Date());
+        mockDate.set(new Date());
     });
 
     afterAll(() => {
-        makeFakeDate.reset();
+        mockDate.reset();
     });
 
     it('should call AddSurveyRepository with correct values', async () => {
