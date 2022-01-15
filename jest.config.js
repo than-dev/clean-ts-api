@@ -12,7 +12,8 @@ module.exports = {
     'node_modules',
     'protocols',
     'main',
-    'test'
+    'test',
+    'src/infra/db/mongodb/helpers/query-builder.ts'
   ],
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1'
