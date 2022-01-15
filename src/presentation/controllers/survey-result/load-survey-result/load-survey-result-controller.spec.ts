@@ -1,4 +1,5 @@
 import { mockLoadSurveyByIdRepository } from '@/data/test';
+import { throwError } from '@/domain/test';
 import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id';
 import { HttpRequest } from '@/presentation/protocols/http';
 import { LoadSurveyResultController } from './load-survey-result-controller';
@@ -43,8 +44,8 @@ describe('LoadSurveyResult Controller', () => {
 
     it('should return 500 if LoadSurveyById throws', async () => {
         const { sut, loadSurveyByIdStub } = makeSut();
-        jest.spyOn(loadSurveyByIdStub, 'loadById').mockReturnValueOnce(
-            Promise.reject(new Error())
+        jest.spyOn(loadSurveyByIdStub, 'loadById').mockImplementationOnce(
+            throwError
         );
 
         const httpResponse = await sut.handle(mockRequest());
