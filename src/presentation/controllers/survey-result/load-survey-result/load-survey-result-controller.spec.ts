@@ -1,7 +1,10 @@
 import { mockLoadSurveyByIdRepository } from '@/data/test';
 import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id';
 import { LoadSurveyResultController } from './load-survey-result-controller';
-import { HttpRequest } from './load-survey-result-controller-protocols';
+import {
+    HttpRequest,
+    serverError
+} from './load-survey-result-controller-protocols';
 
 type SutTypes = {
     sut: LoadSurveyResultController;
@@ -34,5 +37,16 @@ describe('LoadSurveyResult Controller', () => {
         await sut.handle(request);
 
         expect(loadSurveyByIdSpy).toHaveBeenCalledWith(request.body.surveyId);
+    });
+
+    it('should return 500 if LoadSurveyById throws', async () => {
+        const { sut, loadSurveyByIdStub } = makeSut();
+        jest.spyOn(loadSurveyByIdStub, 'loadById').mockReturnValueOnce(
+            Promise.reject(new Error())
+        );
+
+        const response = await sut.handle(mockRequest());
+
+        expect(response).toEqual(serverError(new Error()));
     });
 });
