@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-
-import { DbLoadSurveyResult } from './db-load-survey-result';
 import { LoadSurveyResultRepository } from '@/data/protocols/db/survey-result/load-survey-result';
 import { mockLoadSurveyResultRepository } from '@/data/test/mock-db-load-survey-result';
 import { mockSurveyResultModel, throwError } from '@/domain/test';
-import { LoadSurveyByIdRepository } from '../../survey/load-survey-by-id/db-load-survey-by-id-protocols';
 import { mockLoadSurveyByIdRepository } from '@/data/test';
+
+import { DbLoadSurveyResult } from './db-load-survey-result';
+import { LoadSurveyByIdRepository } from '../../survey/load-survey-by-id/db-load-survey-by-id-protocols';
+
+import makeFakeDate from 'mockdate';
 
 type SutTypes = {
     sut: DbLoadSurveyResult;
@@ -29,6 +31,14 @@ const makeSut = (): SutTypes => {
 };
 
 describe('DbLoadSurveyResult UseCase', () => {
+    beforeAll(() => {
+        makeFakeDate.set(new Date());
+    });
+
+    afterAll(() => {
+        makeFakeDate.reset();
+    });
+
     it('should call LoadSurveyResultRepository with correct values', async () => {
         const { sut, loadSurveyResultRepositoryStub } = makeSut();
         const loadBySurveyIdSpy = jest.spyOn(
@@ -56,6 +66,19 @@ describe('DbLoadSurveyResult UseCase', () => {
     it('should return surveyResultModel on success', async () => {
         const { sut } = makeSut();
         const surveyResult = await sut.load('any_survey_id');
+
+        expect(surveyResult).toEqual(mockSurveyResultModel());
+    });
+
+    it('should return surveyResultModel with all answers with count 0 if LoadSurveyResultRepository returns null ', async () => {
+        const { sut, loadSurveyResultRepositoryStub } = makeSut();
+
+        jest.spyOn(
+            loadSurveyResultRepositoryStub,
+            'loadBySurveyId'
+        ).mockReturnValueOnce(Promise.resolve(null));
+
+        const surveyResult = await sut.load('any_id');
 
         expect(surveyResult).toEqual(mockSurveyResultModel());
     });

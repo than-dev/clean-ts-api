@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { SaveSurveyResultRepository } from '@/data/protocols/db/survey-result/save-survey-result-repository';
-import { DbSaveSurveyResult } from './db-save-survey-result';
 import {
     mockSaveSurveyResultParams,
     mockSurveyResultModel,
     throwError
 } from '@/domain/test';
+import { mockSaveSurveyResultRepository } from '@/data/test';
+import { mockLoadSurveyResultRepository } from '@/data/test/mock-db-load-survey-result';
+
+import { DbSaveSurveyResult } from './db-save-survey-result';
+import { LoadSurveyResultRepository } from '../load-survey-result/db-load-survey-result-protocols';
 
 import makeFakeDate from 'mockdate';
-import { mockSaveSurveyResultRepository } from '@/data/test';
-import { LoadSurveyResultRepository } from '../load-survey-result/db-load-survey-result-protocols';
-import { mockLoadSurveyResultRepository } from '@/data/test/mock-db-load-survey-result';
 
 type SutTypes = {
     sut: DbSaveSurveyResult;
