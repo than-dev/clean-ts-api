@@ -11,7 +11,7 @@ import request from 'supertest';
 let surveyCollection: Collection;
 let accountCollection: Collection;
 
-const makeAccessToken = async (): Promise<any> => {
+const mockAccessToken = async (): Promise<any> => {
     const { insertedId } = await accountCollection.insertOne({
         name: 'Nathan',
         email: 'nathan.cotrim@gmail.com',
@@ -82,7 +82,7 @@ describe('Survey Result Routes', () => {
                 date: new Date()
             });
 
-            const accessToken = await makeAccessToken();
+            const accessToken = await mockAccessToken();
             const surveyId = surveyInsertResponse.insertedId.toHexString();
 
             await request(app)
@@ -114,7 +114,7 @@ describe('Survey Result Routes', () => {
                 date: new Date()
             });
 
-            const accessToken = await makeAccessToken();
+            const accessToken = await mockAccessToken();
             const surveyId = surveyInsertResponse.insertedId.toHexString();
 
             await request(app)

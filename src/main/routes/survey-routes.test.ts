@@ -9,7 +9,7 @@ import mockDate from 'mockdate';
 let surveyCollection: Collection;
 let accountCollection: Collection;
 
-const makeAccessToken = async (role?: string): Promise<any> => {
+const mockAccessToken = async (role?: string): Promise<any> => {
     const { insertedId } = await accountCollection.insertOne({
         name: 'Nathan',
         email: 'nathan.cotrim@gmail.com',
@@ -70,7 +70,7 @@ describe('Survey Routes', () => {
         });
 
         it('should return 204 on add survey with valid access token', async () => {
-            const { accessToken, _id } = await makeAccessToken('admin');
+            const { accessToken, _id } = await mockAccessToken('admin');
 
             await accountCollection.updateOne(
                 {
@@ -135,7 +135,7 @@ describe('Survey Routes', () => {
                 }
             ]);
 
-            const { accessToken, _id } = await makeAccessToken();
+            const { accessToken, _id } = await mockAccessToken();
 
             await accountCollection.updateOne(
                 {
