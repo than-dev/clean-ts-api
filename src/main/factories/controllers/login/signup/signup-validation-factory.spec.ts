@@ -11,12 +11,12 @@ import {
 jest.mock('@/validation/validators/validation-composite.ts');
 
 const makeEmailValidator = (): EmailValidator => {
-    class EmailValidatorStub implements EmailValidator {
+    class EmailValidatorSpy implements EmailValidator {
         isValid(email: string): boolean {
             return true;
         }
     }
-    return new EmailValidatorStub();
+    return new EmailValidatorSpy();
 };
 
 describe('SignUpValidation Factory', () => {

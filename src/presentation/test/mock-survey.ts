@@ -8,21 +8,21 @@ import {
 } from '@/domain/usecases/survey/add-survey';
 
 export const mockAddSurvey = (): AddSurvey => {
-    class AddSurveyStub implements AddSurvey {
+    class AddSurveySpy implements AddSurvey {
         async add(data: AddSurveyParams): Promise<void> {
             return Promise.resolve();
         }
     }
 
-    return new AddSurveyStub();
+    return new AddSurveySpy();
 };
 
 export const mockLoadSurveys = (): LoadSurveys => {
-    class LoadSurveysStub implements LoadSurveys {
+    class LoadSurveysSpy implements LoadSurveys {
         async load(): Promise<SurveyModel[]> {
             return Promise.resolve(mockSurveyModels());
         }
     }
 
-    return new LoadSurveysStub();
+    return new LoadSurveysSpy();
 };

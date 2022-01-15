@@ -7,31 +7,31 @@ import { LoadSurveyByIdRepository } from '../protocols/db/survey/load-survey-by-
 import { LoadSurveysRepository } from '../protocols/db/survey/load-surveys-repository';
 
 export const mockAddSurveyRepository = (): AddSurveyRepository => {
-    class AddSurveyRepositoryStub implements AddSurveyRepository {
+    class AddSurveyRepositorySpy implements AddSurveyRepository {
         async add(surveyData: AddSurveyParams): Promise<void> {
             return Promise.resolve();
         }
     }
 
-    return new AddSurveyRepositoryStub();
+    return new AddSurveyRepositorySpy();
 };
 
 export const mockLoadSurveyByIdRepository = (): LoadSurveyById => {
-    class LoadSurveyByIdStub implements LoadSurveyByIdRepository {
+    class LoadSurveyByIdSpy implements LoadSurveyByIdRepository {
         async loadById(id: string): Promise<SurveyModel> {
             return Promise.resolve(mockSurveyModel());
         }
     }
 
-    return new LoadSurveyByIdStub();
+    return new LoadSurveyByIdSpy();
 };
 
 export const mockLoadSurveysRepository = (): LoadSurveysRepository => {
-    class LoadSurveysRepositoryStub implements LoadSurveysRepository {
+    class LoadSurveysRepositorySpy implements LoadSurveysRepository {
         async loadAll(): Promise<SurveyModel[]> {
             return Promise.resolve(mockSurveyModels());
         }
     }
 
-    return new LoadSurveysRepositoryStub();
+    return new LoadSurveysRepositorySpy();
 };

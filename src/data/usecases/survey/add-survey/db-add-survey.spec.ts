@@ -8,16 +8,16 @@ import { mockAddSurveyRepository } from '@/data/test';
 
 type SutTypes = {
     sut: DbAddSurvey;
-    addSurveyRepositoryStub: AddSurveyRepository;
+    addSurveyRepositorySpy: AddSurveyRepository;
 };
 
 const makeSut = (): SutTypes => {
-    const addSurveyRepositoryStub = mockAddSurveyRepository();
-    const sut = new DbAddSurvey(addSurveyRepositoryStub);
+    const addSurveyRepositorySpy = mockAddSurveyRepository();
+    const sut = new DbAddSurvey(addSurveyRepositorySpy);
 
     return {
         sut,
-        addSurveyRepositoryStub
+        addSurveyRepositorySpy
     };
 };
 
@@ -31,8 +31,8 @@ describe('DbAddSurvey Usecase', () => {
     });
 
     it('should call AddSurveyRepository with correct values', async () => {
-        const { sut, addSurveyRepositoryStub } = makeSut();
-        const addSpy = jest.spyOn(addSurveyRepositoryStub, 'add');
+        const { sut, addSurveyRepositorySpy } = makeSut();
+        const addSpy = jest.spyOn(addSurveyRepositorySpy, 'add');
 
         const surveyData = mockSurveyModel();
         await sut.add(surveyData);
@@ -41,8 +41,8 @@ describe('DbAddSurvey Usecase', () => {
     });
 
     it('should throws if AddSurveyRepository throws', async () => {
-        const { sut, addSurveyRepositoryStub } = makeSut();
-        jest.spyOn(addSurveyRepositoryStub, 'add').mockImplementationOnce(
+        const { sut, addSurveyRepositorySpy } = makeSut();
+        jest.spyOn(addSurveyRepositorySpy, 'add').mockImplementationOnce(
             throwError
         );
 

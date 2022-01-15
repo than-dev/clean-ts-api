@@ -15,23 +15,23 @@ import mockDate from 'mockdate';
 
 type SutTypes = {
     sut: DbSaveSurveyResult;
-    saveSurveyResultRepositoryStub: SaveSurveyResultRepository;
-    loadSurveyResultRepositoryStub: LoadSurveyResultRepository;
+    saveSurveyResultRepositorySpy: SaveSurveyResultRepository;
+    loadSurveyResultRepositorySpy: LoadSurveyResultRepository;
 };
 
 const makeSut = (): SutTypes => {
-    const saveSurveyResultRepositoryStub = mockSaveSurveyResultRepository();
-    const loadSurveyResultRepositoryStub = mockLoadSurveyResultRepository();
+    const saveSurveyResultRepositorySpy = mockSaveSurveyResultRepository();
+    const loadSurveyResultRepositorySpy = mockLoadSurveyResultRepository();
 
     const sut = new DbSaveSurveyResult(
-        saveSurveyResultRepositoryStub,
-        loadSurveyResultRepositoryStub
+        saveSurveyResultRepositorySpy,
+        loadSurveyResultRepositorySpy
     );
 
     return {
         sut,
-        saveSurveyResultRepositoryStub,
-        loadSurveyResultRepositoryStub
+        saveSurveyResultRepositorySpy,
+        loadSurveyResultRepositorySpy
     };
 };
 
@@ -45,8 +45,8 @@ describe('DbSaveSurveyResult Usecase', () => {
     });
 
     it('should call SaveSurveyResultRepository with correct values', async () => {
-        const { sut, saveSurveyResultRepositoryStub } = makeSut();
-        const saveSpy = jest.spyOn(saveSurveyResultRepositoryStub, 'save');
+        const { sut, saveSurveyResultRepositorySpy } = makeSut();
+        const saveSpy = jest.spyOn(saveSurveyResultRepositorySpy, 'save');
 
         const surveyResultData = mockSaveSurveyResultParams();
         await sut.save(surveyResultData);
@@ -55,9 +55,9 @@ describe('DbSaveSurveyResult Usecase', () => {
     });
 
     it('should throws if SaveSurveyResultRepository throws', async () => {
-        const { sut, saveSurveyResultRepositoryStub } = makeSut();
+        const { sut, saveSurveyResultRepositorySpy } = makeSut();
         jest.spyOn(
-            saveSurveyResultRepositoryStub,
+            saveSurveyResultRepositorySpy,
             'save'
         ).mockImplementationOnce(throwError);
 
@@ -76,9 +76,9 @@ describe('DbSaveSurveyResult Usecase', () => {
     });
 
     it('should call LoadSurveyResultRepository with correct values', async () => {
-        const { sut, loadSurveyResultRepositoryStub } = makeSut();
+        const { sut, loadSurveyResultRepositorySpy } = makeSut();
         const loadSpy = jest.spyOn(
-            loadSurveyResultRepositoryStub,
+            loadSurveyResultRepositorySpy,
             'loadBySurveyId'
         );
 
@@ -89,9 +89,9 @@ describe('DbSaveSurveyResult Usecase', () => {
     });
 
     it('should throws if LoadSurveyResultRepository throws', async () => {
-        const { sut, loadSurveyResultRepositoryStub } = makeSut();
+        const { sut, loadSurveyResultRepositorySpy } = makeSut();
         jest.spyOn(
-            loadSurveyResultRepositoryStub,
+            loadSurveyResultRepositorySpy,
             'loadBySurveyId'
         ).mockImplementationOnce(throwError);
 

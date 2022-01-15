@@ -5,36 +5,36 @@ import { EmailValidation } from './email-validation';
 
 type SutTypes = {
     sut: EmailValidation;
-    emailValidatorStub: EmailValidator;
+    emailValidatorSpy: EmailValidator;
 };
 
 const makeSut = (): SutTypes => {
-    const emailValidatorStub = mockEmailValidator();
-    const sut = new EmailValidation('email', emailValidatorStub);
+    const emailValidatorSpy = mockEmailValidator();
+    const sut = new EmailValidation('email', emailValidatorSpy);
     return {
         sut,
-        emailValidatorStub
+        emailValidatorSpy
     };
 };
 
 describe('Email Validation', () => {
     it('should return an error if EmailValidator returns false', () => {
-        const { sut, emailValidatorStub } = makeSut();
-        jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false);
+        const { sut, emailValidatorSpy } = makeSut();
+        jest.spyOn(emailValidatorSpy, 'isValid').mockReturnValueOnce(false);
         const error = sut.validate({ email: 'any_email@mail.com' });
         expect(error).toEqual(new InvalidParamError('email'));
     });
 
     it('should call EmailValidator with correct email', () => {
-        const { sut, emailValidatorStub } = makeSut();
-        const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid');
+        const { sut, emailValidatorSpy } = makeSut();
+        const isValidSpy = jest.spyOn(emailValidatorSpy, 'isValid');
         sut.validate({ email: 'any_email@mail.com' });
         expect(isValidSpy).toHaveBeenCalledWith('any_email@mail.com');
     });
 
     it('should throw if EmailValidator throws', () => {
-        const { sut, emailValidatorStub } = makeSut();
-        jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
+        const { sut, emailValidatorSpy } = makeSut();
+        jest.spyOn(emailValidatorSpy, 'isValid').mockImplementationOnce(() => {
             throw new Error();
         });
         expect(sut.validate).toThrow();

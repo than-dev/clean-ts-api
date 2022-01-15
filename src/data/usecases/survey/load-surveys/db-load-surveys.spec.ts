@@ -7,16 +7,16 @@ import { mockLoadSurveysRepository } from '@/data/test';
 
 type SutTypes = {
     sut: DbLoadSurveys;
-    loadSurveysRepositoryStub: LoadSurveysRepository;
+    loadSurveysRepositorySpy: LoadSurveysRepository;
 };
 
 const makeSut = (): SutTypes => {
-    const loadSurveysRepositoryStub = mockLoadSurveysRepository();
-    const sut = new DbLoadSurveys(loadSurveysRepositoryStub);
+    const loadSurveysRepositorySpy = mockLoadSurveysRepository();
+    const sut = new DbLoadSurveys(loadSurveysRepositorySpy);
 
     return {
         sut,
-        loadSurveysRepositoryStub
+        loadSurveysRepositorySpy
     };
 };
 
@@ -30,9 +30,9 @@ describe('DbLoadSurveys', () => {
     });
 
     it('should call LoadSurveysRepository', async () => {
-        const { sut, loadSurveysRepositoryStub } = makeSut();
+        const { sut, loadSurveysRepositorySpy } = makeSut();
 
-        const loadSpy = jest.spyOn(loadSurveysRepositoryStub, 'loadAll');
+        const loadSpy = jest.spyOn(loadSurveysRepositorySpy, 'loadAll');
 
         await sut.load();
 
@@ -48,9 +48,9 @@ describe('DbLoadSurveys', () => {
     });
 
     it('should throw if LoadSurveysRepository throws', async () => {
-        const { sut, loadSurveysRepositoryStub } = makeSut();
+        const { sut, loadSurveysRepositorySpy } = makeSut();
 
-        jest.spyOn(loadSurveysRepositoryStub, 'loadAll').mockImplementationOnce(
+        jest.spyOn(loadSurveysRepositorySpy, 'loadAll').mockImplementationOnce(
             throwError
         );
 

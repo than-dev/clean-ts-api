@@ -8,16 +8,16 @@ import { mockLoadAccountByTokenRepository } from '@/data/test';
 
 type SutTypes = {
     sut: AuthMiddleware;
-    loadAccountByTokenStub: LoadAccountByToken;
+    loadAccountByTokenSpy: LoadAccountByToken;
 };
 
 const makeSut = (role?: string): SutTypes => {
-    const loadAccountByTokenStub = mockLoadAccountByTokenRepository();
-    const sut = new AuthMiddleware(loadAccountByTokenStub, role);
+    const loadAccountByTokenSpy = mockLoadAccountByTokenRepository();
+    const sut = new AuthMiddleware(loadAccountByTokenSpy, role);
 
     return {
         sut,
-        loadAccountByTokenStub
+        loadAccountByTokenSpy
     };
 };
 
@@ -37,9 +37,9 @@ describe('Auth Middleware', () => {
 
     it('should call LoadAccountByToken with correct accessToken', async () => {
         const role = 'any_role';
-        const { sut, loadAccountByTokenStub } = makeSut(role);
+        const { sut, loadAccountByTokenSpy } = makeSut(role);
 
-        const loadSpy = jest.spyOn(loadAccountByTokenStub, 'loadByToken');
+        const loadSpy = jest.spyOn(loadAccountByTokenSpy, 'loadByToken');
 
         await sut.handle(mockRequest());
 
@@ -47,9 +47,9 @@ describe('Auth Middleware', () => {
     });
 
     it('should return 403 if LoadAccountByToken returns null', async () => {
-        const { sut, loadAccountByTokenStub } = makeSut();
+        const { sut, loadAccountByTokenSpy } = makeSut();
 
-        jest.spyOn(loadAccountByTokenStub, 'loadByToken').mockReturnValueOnce(
+        jest.spyOn(loadAccountByTokenSpy, 'loadByToken').mockReturnValueOnce(
             Promise.resolve(null)
         );
 
@@ -67,12 +67,11 @@ describe('Auth Middleware', () => {
     });
 
     it('should return 500 if LoadAccountByToken throws', async () => {
-        const { sut, loadAccountByTokenStub } = makeSut();
+        const { sut, loadAccountByTokenSpy } = makeSut();
 
-        jest.spyOn(
-            loadAccountByTokenStub,
-            'loadByToken'
-        ).mockImplementationOnce(throwError);
+        jest.spyOn(loadAccountByTokenSpy, 'loadByToken').mockImplementationOnce(
+            throwError
+        );
 
         const httpResponse = await sut.handle(mockRequest());
 

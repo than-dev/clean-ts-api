@@ -11,22 +11,22 @@ import mockDate from 'mockdate';
 
 type SutTypes = {
     sut: DbLoadSurveyResult;
-    loadSurveyResultRepositoryStub: LoadSurveyResultRepository;
-    loadSurveyByIdRepositoryStub: LoadSurveyByIdRepository;
+    loadSurveyResultRepositorySpy: LoadSurveyResultRepository;
+    loadSurveyByIdRepositorySpy: LoadSurveyByIdRepository;
 };
 
 const makeSut = (): SutTypes => {
-    const loadSurveyResultRepositoryStub = mockLoadSurveyResultRepository();
-    const loadSurveyByIdRepositoryStub = mockLoadSurveyByIdRepository();
+    const loadSurveyResultRepositorySpy = mockLoadSurveyResultRepository();
+    const loadSurveyByIdRepositorySpy = mockLoadSurveyByIdRepository();
     const sut = new DbLoadSurveyResult(
-        loadSurveyResultRepositoryStub,
-        loadSurveyByIdRepositoryStub
+        loadSurveyResultRepositorySpy,
+        loadSurveyByIdRepositorySpy
     );
 
     return {
         sut,
-        loadSurveyResultRepositoryStub,
-        loadSurveyByIdRepositoryStub
+        loadSurveyResultRepositorySpy,
+        loadSurveyByIdRepositorySpy
     };
 };
 
@@ -40,9 +40,9 @@ describe('DbLoadSurveyResult UseCase', () => {
     });
 
     it('should call LoadSurveyResultRepository with correct values', async () => {
-        const { sut, loadSurveyResultRepositoryStub } = makeSut();
+        const { sut, loadSurveyResultRepositorySpy } = makeSut();
         const loadBySurveyIdSpy = jest.spyOn(
-            loadSurveyResultRepositoryStub,
+            loadSurveyResultRepositorySpy,
             'loadBySurveyId'
         );
 
@@ -52,9 +52,9 @@ describe('DbLoadSurveyResult UseCase', () => {
     });
 
     it('should throws if LoadSurveyResultRepository throws', async () => {
-        const { sut, loadSurveyResultRepositoryStub } = makeSut();
+        const { sut, loadSurveyResultRepositorySpy } = makeSut();
         jest.spyOn(
-            loadSurveyResultRepositoryStub,
+            loadSurveyResultRepositorySpy,
             'loadBySurveyId'
         ).mockImplementationOnce(throwError);
 
@@ -71,10 +71,10 @@ describe('DbLoadSurveyResult UseCase', () => {
     });
 
     it('should return surveyResultModel with all answers with count 0 if LoadSurveyResultRepository returns null ', async () => {
-        const { sut, loadSurveyResultRepositoryStub } = makeSut();
+        const { sut, loadSurveyResultRepositorySpy } = makeSut();
 
         jest.spyOn(
-            loadSurveyResultRepositoryStub,
+            loadSurveyResultRepositorySpy,
             'loadBySurveyId'
         ).mockReturnValueOnce(Promise.resolve(null));
 
@@ -86,19 +86,16 @@ describe('DbLoadSurveyResult UseCase', () => {
     it('should call LoadSurveyByIdRepository if LoadSurveyResultRepository returns null ', async () => {
         const {
             sut,
-            loadSurveyResultRepositoryStub,
-            loadSurveyByIdRepositoryStub
+            loadSurveyResultRepositorySpy,
+            loadSurveyByIdRepositorySpy
         } = makeSut();
 
         jest.spyOn(
-            loadSurveyResultRepositoryStub,
+            loadSurveyResultRepositorySpy,
             'loadBySurveyId'
         ).mockReturnValueOnce(Promise.resolve(null));
 
-        const loadByIdSpy = jest.spyOn(
-            loadSurveyByIdRepositoryStub,
-            'loadById'
-        );
+        const loadByIdSpy = jest.spyOn(loadSurveyByIdRepositorySpy, 'loadById');
 
         await sut.load('any_survey_id');
 

@@ -8,29 +8,29 @@ import { LoadAccountByTokenRepository } from '../protocols/db/account/load-accou
 import { UpdateAccessTokenRepository } from '../protocols/db/account/update-access-token-repository';
 
 export const mockAddAccountRepository = (): AddAccountRepository => {
-    class AddAccountRepositoryStub implements AddAccountRepository {
+    class AddAccountRepositorySpy implements AddAccountRepository {
         async add(accountData: AddAccountParams): Promise<AccountModel> {
             return Promise.resolve(mockAccountModel());
         }
     }
-    return new AddAccountRepositoryStub();
+    return new AddAccountRepositorySpy();
 };
 
 export const mockLoadAccountByEmailRepository =
     (): LoadAccountByEmailRepository => {
-        class LoadAccountByEmailRepositoryStub
+        class LoadAccountByEmailRepositorySpy
             implements LoadAccountByEmailRepository
         {
             async loadByEmail(email: string): Promise<AccountModel> {
                 return Promise.resolve(mockAccountModel());
             }
         }
-        return new LoadAccountByEmailRepositoryStub();
+        return new LoadAccountByEmailRepositorySpy();
     };
 
 export const mockLoadAccountByTokenRepository =
     (): LoadAccountByTokenRepository => {
-        class LoadAccountByTokenRepositoryStub
+        class LoadAccountByTokenRepositorySpy
             implements LoadAccountByTokenRepository
         {
             async loadByToken(
@@ -41,17 +41,17 @@ export const mockLoadAccountByTokenRepository =
             }
         }
 
-        return new LoadAccountByTokenRepositoryStub();
+        return new LoadAccountByTokenRepositorySpy();
     };
 
 export const mockUpdateAccessTokenRepository =
     (): UpdateAccessTokenRepository => {
-        class UpdateAccessTokenRepositoryStub
+        class UpdateAccessTokenRepositorySpy
             implements UpdateAccessTokenRepository
         {
             async updateAccessToken(id: string, token: string): Promise<void> {
                 return Promise.resolve();
             }
         }
-        return new UpdateAccessTokenRepositoryStub();
+        return new UpdateAccessTokenRepositorySpy();
     };

@@ -12,16 +12,16 @@ import { mockLoadSurveys } from '@/presentation/test';
 
 type SutTypes = {
     sut: LoadSurveysController;
-    loadSurveysStub: LoadSurveys;
+    loadSurveysSpy: LoadSurveys;
 };
 
 const makeSut = (): SutTypes => {
-    const loadSurveysStub = mockLoadSurveys();
-    const sut = new LoadSurveysController(loadSurveysStub);
+    const loadSurveysSpy = mockLoadSurveys();
+    const sut = new LoadSurveysController(loadSurveysSpy);
 
     return {
         sut,
-        loadSurveysStub
+        loadSurveysSpy
     };
 };
 
@@ -35,9 +35,9 @@ describe('LoadSurveys Controller', () => {
     });
 
     it('should call LoadSurveys with correct values', async () => {
-        const { sut, loadSurveysStub } = makeSut();
+        const { sut, loadSurveysSpy } = makeSut();
 
-        const loadSpy = jest.spyOn(loadSurveysStub, 'load');
+        const loadSpy = jest.spyOn(loadSurveysSpy, 'load');
 
         await sut.handle({});
 
@@ -52,9 +52,9 @@ describe('LoadSurveys Controller', () => {
     });
 
     it('should return 204 if LoadSurveys returns empty', async () => {
-        const { sut, loadSurveysStub } = makeSut();
+        const { sut, loadSurveysSpy } = makeSut();
 
-        jest.spyOn(loadSurveysStub, 'load').mockReturnValueOnce(
+        jest.spyOn(loadSurveysSpy, 'load').mockReturnValueOnce(
             Promise.resolve([])
         );
 
@@ -64,9 +64,9 @@ describe('LoadSurveys Controller', () => {
     });
 
     it('should return 500 if LoadSurveys throws', async () => {
-        const { sut, loadSurveysStub } = makeSut();
+        const { sut, loadSurveysSpy } = makeSut();
 
-        jest.spyOn(loadSurveysStub, 'load').mockImplementationOnce(throwError);
+        jest.spyOn(loadSurveysSpy, 'load').mockImplementationOnce(throwError);
 
         const httpResponse = await sut.handle({});
 

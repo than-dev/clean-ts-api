@@ -9,31 +9,31 @@ import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id';
 import { SurveyModel } from '../controllers/survey/load-survey/load-surveys-controller-protocols';
 
 export const mockSaveSurveyResult = (): SaveSurveyResult => {
-    class SaveSurveyResultStub implements SaveSurveyResult {
+    class SaveSurveyResultSpy implements SaveSurveyResult {
         async save(data: SaveSurveyResultParams): Promise<SurveyResultModel> {
             return Promise.resolve(mockSurveyResultModel());
         }
     }
 
-    return new SaveSurveyResultStub();
+    return new SaveSurveyResultSpy();
 };
 
 export const mockLoadSurveyResult = (): LoadSurveyResult => {
-    class LoadSurveyResultStub implements LoadSurveyResult {
+    class LoadSurveyResultSpy implements LoadSurveyResult {
         async load(surveyId: string): Promise<SurveyResultModel> {
             return Promise.resolve(mockSurveyResultModel());
         }
     }
 
-    return new LoadSurveyResultStub();
+    return new LoadSurveyResultSpy();
 };
 
 export const mockLoadSurveyById = (): LoadSurveyById => {
-    class LoadSurveyByIdStub implements LoadSurveyById {
+    class LoadSurveyByIdSpy implements LoadSurveyById {
         async loadById(id: string): Promise<SurveyModel> {
             return Promise.resolve(mockSurveyModel());
         }
     }
 
-    return new LoadSurveyByIdStub();
+    return new LoadSurveyByIdSpy();
 };

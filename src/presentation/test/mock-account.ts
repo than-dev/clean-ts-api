@@ -11,19 +11,19 @@ import {
 } from '@/domain/usecases/account/authentication';
 
 export const mockAddAccount = (): AddAccount => {
-    class AddAccountStub implements AddAccount {
+    class AddAccountSpy implements AddAccount {
         async add(account: AddAccountParams): Promise<AccountModel> {
             return Promise.resolve(mockAccountModel());
         }
     }
-    return new AddAccountStub();
+    return new AddAccountSpy();
 };
 
 export const mockAuthentication = (): Authentication => {
-    class AuthenticationStub implements Authentication {
+    class AuthenticationSpy implements Authentication {
         async auth(authentication: AuthenticationParams): Promise<string> {
             return Promise.resolve('any_token');
         }
     }
-    return new AuthenticationStub();
+    return new AuthenticationSpy();
 };

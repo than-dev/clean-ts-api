@@ -6,7 +6,7 @@ import { SurveyResultModel } from '../usecases/survey-result/save-survey-result/
 
 export const mockLoadSurveyResultRepository =
     (): LoadSurveyResultRepository => {
-        class LoadSurveyResultRepositoryStub
+        class LoadSurveyResultRepositorySpy
             implements LoadSurveyResultRepository
         {
             async loadBySurveyId(surveyId: string): Promise<SurveyResultModel> {
@@ -14,5 +14,5 @@ export const mockLoadSurveyResultRepository =
             }
         }
 
-        return new LoadSurveyResultRepositoryStub();
+        return new LoadSurveyResultRepositorySpy();
     };

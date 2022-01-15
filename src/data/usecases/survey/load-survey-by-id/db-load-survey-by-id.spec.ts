@@ -7,16 +7,16 @@ import { mockLoadSurveyByIdRepository } from '@/data/test';
 
 type SutTypes = {
     sut: DbLoadSurveyById;
-    loadSurveyByIdRepositoryStub: LoadSurveyByIdRepository;
+    loadSurveyByIdRepositorySpy: LoadSurveyByIdRepository;
 };
 
 const makeSut = (): SutTypes => {
-    const loadSurveyByIdRepositoryStub = mockLoadSurveyByIdRepository();
-    const sut = new DbLoadSurveyById(loadSurveyByIdRepositoryStub);
+    const loadSurveyByIdRepositorySpy = mockLoadSurveyByIdRepository();
+    const sut = new DbLoadSurveyById(loadSurveyByIdRepositorySpy);
 
     return {
         sut,
-        loadSurveyByIdRepositoryStub
+        loadSurveyByIdRepositorySpy
     };
 };
 
@@ -30,12 +30,9 @@ describe('DbLoadSurveys', () => {
     });
 
     it('should call LoadSurveyByIdRepository', async () => {
-        const { sut, loadSurveyByIdRepositoryStub } = makeSut();
+        const { sut, loadSurveyByIdRepositorySpy } = makeSut();
 
-        const loadByIdSpy = jest.spyOn(
-            loadSurveyByIdRepositoryStub,
-            'loadById'
-        );
+        const loadByIdSpy = jest.spyOn(loadSurveyByIdRepositorySpy, 'loadById');
 
         await sut.loadById('any_id');
 
@@ -49,9 +46,9 @@ describe('DbLoadSurveys', () => {
     });
 
     it('should throw if LoadSurveyByIdRepository throws', async () => {
-        const { sut, loadSurveyByIdRepositoryStub } = makeSut();
+        const { sut, loadSurveyByIdRepositorySpy } = makeSut();
         jest.spyOn(
-            loadSurveyByIdRepositoryStub,
+            loadSurveyByIdRepositorySpy,
             'loadById'
         ).mockImplementationOnce(throwError);
 
