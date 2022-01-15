@@ -92,4 +92,39 @@ describe('Survey Result Routes', () => {
                 .expect(200);
         });
     });
+
+    describe('GET /surveys/:surveyId/results', () => {
+        it('should return 403 on save survey result without access token', async () => {
+            await request(app)
+                .get('/api/surveys/any_survey_id/results')
+                .expect(403);
+        });
+
+        // it('should return 200 on save survey result with accessToken', async () => {
+        //     const surveyInsertResponse = await surveyCollection.insertOne({
+        //         question: 'question',
+        //         answers: [
+        //             {
+        //                 answer: 'Answer 1',
+        //                 image: 'http://fake-image.png'
+        //             },
+        //             {
+        //                 answer: 'Answer 2'
+        //             }
+        //         ],
+        //         date: new Date()
+        //     });
+
+        //     const accessToken = await makeAccessToken();
+        //     const surveyId = surveyInsertResponse.insertedId.toHexString();
+
+        //     await request(app)
+        //         .put(`/api/surveys/${surveyId}/results`)
+        //         .set('x-access-token', accessToken)
+        //         .send({
+        //             answer: 'Answer 1'
+        //         })
+        //         .expect(200);
+        // });
+    });
 });
