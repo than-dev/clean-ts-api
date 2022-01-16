@@ -36,6 +36,7 @@ export namespace AddSurveyController {
     export type Request = {
         question: string;
         answers: Answer[];
+        date: Date;
     };
 
     type Answer = {

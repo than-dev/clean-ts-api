@@ -24,7 +24,8 @@ const mockRequest = (): AddSurveyController.Request => ({
             image: 'any_img',
             answer: 'any_answer'
         }
-    ]
+    ],
+    date: new Date()
 });
 
 const makeSut = (): SutTypes => {
