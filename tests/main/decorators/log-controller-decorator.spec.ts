@@ -40,7 +40,7 @@ const makeSut = (): SutTypes => {
 };
 
 describe('LogController Decorator', () => {
-    test('Should call controller handle', async () => {
+    it('should call controller handle', async () => {
         const { sut, controllerSpy } = makeSut();
 
         const request = 'any';
@@ -49,7 +49,7 @@ describe('LogController Decorator', () => {
         expect(controllerSpy.request).toEqual(request);
     });
 
-    test('Should return the same result of the controller', async () => {
+    it('should return the same result of the controller', async () => {
         const { sut, controllerSpy } = makeSut();
 
         const httpResponse = await sut.handle('any');
@@ -57,7 +57,7 @@ describe('LogController Decorator', () => {
         expect(httpResponse).toEqual(controllerSpy.httpResponse);
     });
 
-    test('Should call LogErrorRepository with correct error if controller returns a server error', async () => {
+    it('should call LogErrorRepository with correct error if controller returns a server error', async () => {
         const { sut, controllerSpy, logErrorRepositorySpy } = makeSut();
 
         const serverError = mockServerError();

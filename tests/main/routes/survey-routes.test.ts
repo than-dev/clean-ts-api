@@ -2,7 +2,7 @@ import { MongoHelper } from '@/infra/db/mongodb/mongo-helper';
 import { setupApp } from '@/main/config/app';
 import env from '@/main/config/env';
 
-import { Collection } from 'mongodb';
+import { Collection, ObjectId } from 'mongodb';
 import { Express } from 'express';
 import { sign } from 'jsonwebtoken';
 
@@ -13,7 +13,9 @@ let surveyCollection: Collection;
 let accountCollection: Collection;
 let app: Express;
 
-const mockAccessToken = async (role?: string): Promise<any> => {
+const mockAccessToken = async (
+    role?: string
+): Promise<{ accessToken: string; _id: ObjectId }> => {
     const { insertedId } = await accountCollection.insertOne({
         name: 'Nathan',
         email: 'nathan.cotrim@gmail.com',
