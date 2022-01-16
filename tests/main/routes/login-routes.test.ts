@@ -1,15 +1,19 @@
-import app from '@/main/config/app';
+import { setupApp } from '@/main/config/app';
 import { MongoHelper } from '@/infra/db/mongodb/mongo-helper';
 
-import request from 'supertest';
 import { Collection } from 'mongodb';
+import { Express } from 'express';
 import { hash } from 'bcrypt';
+import request from 'supertest';
 
 let accountCollection: Collection;
+let app: Express;
 
 describe('Login Routes', () => {
     beforeAll(async () => {
         await MongoHelper.connect(process.env.MONGO_URL);
+
+        app = await setupApp();
     });
 
     afterAll(async () => {

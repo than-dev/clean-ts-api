@@ -1,15 +1,16 @@
 import { MongoHelper } from '@/infra/db/mongodb/mongo-helper';
-
-import app from '@/main/config/app';
+import { setupApp } from '@/main/config/app';
 import env from '@/main/config/env';
 
 import { Collection, ObjectId } from 'mongodb';
 import { sign } from 'jsonwebtoken';
 import mockDate from 'mockdate';
 import request from 'supertest';
+import { Express } from 'express';
 
 let surveyCollection: Collection;
 let accountCollection: Collection;
+let app: Express;
 
 const mockAccessToken = async (): Promise<any> => {
     const { insertedId } = await accountCollection.insertOne({
@@ -38,6 +39,8 @@ describe('Survey Result Routes', () => {
     beforeAll(async () => {
         mockDate.set(new Date());
         await MongoHelper.connect(process.env.MONGO_URL);
+
+        app = await setupApp();
     });
 
     afterAll(() => {
