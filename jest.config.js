@@ -1,21 +1,18 @@
 module.exports = {
+  roots: ['<rootDir>/tests'],
   collectCoverageFrom: [
-    '<rootDir>/src/**/*.ts'
+    '<rootDir>/src/**/*.ts',
+    '!<rootDir>/src/main/**'
   ],
   coverageDirectory: 'coverage',
+  coverageProvider: 'babel',
   testEnvironment: 'node',
+  preset: '@shelf/jest-mongodb',
   transform: {
     '.+\\.ts$': 'ts-jest'
   },
-  preset: '@shelf/jest-mongodb',
-  coveragePathIgnorePatterns: [
-    'node_modules',
-    'protocols',
-    'main',
-    'test',
-    'query-builder.ts'
-  ],
   moduleNameMapper: {
+    '@/tests/(.*)': '<rootDir>/tests/$1',
     '@/(.*)': '<rootDir>/src/$1'
   }
-};
+}

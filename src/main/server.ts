@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
     addAlias('@', join(__dirname, '..'));
 }
 
-import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper';
+import { MongoHelper } from '@/infra/db/mongodb/mongo-helper';
 import env from './config/env';
 
 MongoHelper.connect(env.mongoUrl)
