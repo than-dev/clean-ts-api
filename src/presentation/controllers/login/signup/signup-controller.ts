@@ -1,18 +1,15 @@
 import {
     HttpResponse,
-    HttpRequest,
     Controller,
     AddAccount,
-    Authentication
-} from './signup-controller-protocols';
-import {
+    Authentication,
+    Validation,
     badRequest,
-    serverError,
+    forbidden,
     ok,
-    forbidden
-} from '../../../helpers/http/http-helper';
-import { Validation } from '../../../protocols/validation';
-import { EmailInUseError } from '../../../errors';
+    serverError,
+    EmailInUseError
+} from './signup-controller-protocols';
 
 export class SignUpController implements Controller {
     constructor(
@@ -21,28 +18,42 @@ export class SignUpController implements Controller {
         private readonly authentication: Authentication
     ) {}
 
-    async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+    async handle(request: SignUpController.Request): Promise<HttpResponse> {
         try {
-            const error = this.validation.validate(httpRequest.body);
+            const error = this.validation.validate(request);
             if (error) {
                 return badRequest(error);
             }
-            const { name, email, password } = httpRequest.body;
+
+            const { name, email, password } = request;
+
             const account = await this.addAccount.add({
                 name,
                 email,
                 password
             });
+
             if (!account) {
                 return forbidden(new EmailInUseError());
             }
+
             const accessToken = await this.authentication.auth({
                 email,
                 password
             });
+
             return ok({ accessToken });
         } catch (error) {
             return serverError(error);
         }
     }
+}
+
+export namespace SignUpController {
+    export type Request = {
+        name: string;
+        email: string;
+        password: string;
+        passwordConfirmation: string;
+    };
 }

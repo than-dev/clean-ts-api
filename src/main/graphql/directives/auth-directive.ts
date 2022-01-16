@@ -13,10 +13,7 @@ export const authDirectiveTransformer = (
                 const { resolve } = fieldConfig;
                 fieldConfig.resolve = async (parent, args, context, info) => {
                     const request = {
-                        headers: {
-                            'x-access-token':
-                                context?.req?.headers?.['x-access-token']
-                        }
+                        accessToken: context?.req?.headers?.['x-access-token']
                     };
 
                     const httpResponse = await makeAuthMiddleware().handle(

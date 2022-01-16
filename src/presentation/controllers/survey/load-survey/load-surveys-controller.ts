@@ -1,6 +1,5 @@
 import {
     Controller,
-    HttpRequest,
     HttpResponse,
     LoadSurveys,
     noContent,
@@ -11,7 +10,9 @@ import {
 export class LoadSurveysController implements Controller {
     constructor(private readonly loadSurveys: LoadSurveys) {}
 
-    async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+    async handle(
+        request: LoadSurveysController.Request
+    ): Promise<HttpResponse> {
         try {
             const surveys = await this.loadSurveys.load();
 
@@ -20,4 +21,10 @@ export class LoadSurveysController implements Controller {
             return serverError(error);
         }
     }
+}
+
+export namespace LoadSurveysController {
+    export type Request = {
+        accountId: string;
+    };
 }

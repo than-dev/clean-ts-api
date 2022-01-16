@@ -1,6 +1,5 @@
 import {
     Controller,
-    HttpRequest,
     HttpResponse,
     forbidden,
     InvalidParamError,
@@ -16,11 +15,11 @@ export class SaveSurveyResultController implements Controller {
         private readonly saveSurveyResult: SaveSurveyResult
     ) {}
 
-    async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+    async handle(
+        request: SaveSurveyResultController.Request
+    ): Promise<HttpResponse> {
         try {
-            const { surveyId } = httpRequest.params;
-            const { answer } = httpRequest.body;
-            const { accountId } = httpRequest;
+            const { surveyId, answer } = request;
 
             const survey = await this.loadSurveyById.loadById(surveyId);
 
@@ -34,9 +33,7 @@ export class SaveSurveyResultController implements Controller {
             }
 
             const surveyResult = await this.saveSurveyResult.save({
-                accountId,
-                surveyId,
-                answer,
+                ...request,
                 date: new Date()
             });
 
@@ -45,4 +42,12 @@ export class SaveSurveyResultController implements Controller {
             return serverError(error);
         }
     }
+}
+
+export namespace SaveSurveyResultController {
+    export type Request = {
+        surveyId: string;
+        answer: string;
+        accountId: string;
+    };
 }
