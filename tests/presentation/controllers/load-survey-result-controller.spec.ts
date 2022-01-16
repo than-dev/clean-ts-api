@@ -3,7 +3,6 @@ import {
     ok,
     serverError
 } from '@/presentation/helpers/http/http-helper';
-import { HttpRequest } from '@/presentation/protocols/http';
 import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id';
 import { LoadSurveyResult } from '@/domain/usecases/survey-result/load-survey-result';
 import { InvalidParamError } from '@/presentation/errors';
@@ -22,10 +21,8 @@ type SutTypes = {
     loadSurveyResultSpy: LoadSurveyResult;
 };
 
-const mockRequest = (): HttpRequest => ({
-    params: {
-        surveyId: 'any_survey_id'
-    }
+const mockRequest = (): LoadSurveyResultController.Request => ({
+    surveyId: 'any_survey_id'
 });
 
 const makeSut = (): SutTypes => {
@@ -60,9 +57,7 @@ describe('LoadSurveyResult Controller', () => {
 
         await sut.handle(request);
 
-        expect(loadSurveyByIdSpied).toHaveBeenCalledWith(
-            request.params.surveyId
-        );
+        expect(loadSurveyByIdSpied).toHaveBeenCalledWith(request.surveyId);
     });
 
     it('should return 500 if LoadSurveyById throws', async () => {
@@ -93,12 +88,10 @@ describe('LoadSurveyResult Controller', () => {
         const { sut, loadSurveyResultSpy } = makeSut();
         const loadSurveyByIdSpied = jest.spyOn(loadSurveyResultSpy, 'load');
 
-        const httpRequest = mockRequest();
-        await sut.handle(httpRequest);
+        const request = mockRequest();
+        await sut.handle(request);
 
-        expect(loadSurveyByIdSpied).toHaveBeenCalledWith(
-            httpRequest.params.surveyId
-        );
+        expect(loadSurveyByIdSpied).toHaveBeenCalledWith(request.surveyId);
     });
 
     it('should return 500 if LoadSurveyResult throws', async () => {

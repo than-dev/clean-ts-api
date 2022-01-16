@@ -18,15 +18,13 @@ import { AddAccount } from '@/presentation/controllers/login/signup/signup-contr
 import { throwError } from '@/tests/domain/mocks';
 import { Authentication } from '@/presentation/controllers/login/login/login-controller-protocols';
 import { SignUpController } from '@/presentation/controllers/login/signup/signup-controller';
-import { HttpRequest, Validation } from '@/presentation/protocols';
+import { Validation } from '@/presentation/protocols';
 
-const mockRequest = (): HttpRequest => ({
-    body: {
-        name: 'any_name',
-        email: 'any_email@mail.com',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-    }
+const mockRequest = (): SignUpController.Request => ({
+    name: 'any_name',
+    email: 'any_email@mail.com',
+    password: 'any_password',
+    passwordConfirmation: 'any_password'
 });
 
 type SutTypes = {
@@ -91,10 +89,13 @@ describe('SignUp Controller', () => {
 
     it('should call Validation with correct value', async () => {
         const { sut, validationSpy } = makeSut();
+
         const validateSpy = jest.spyOn(validationSpy, 'validate');
-        const httpRequest = mockRequest();
-        await sut.handle(httpRequest);
-        expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
+
+        const request = mockRequest();
+        await sut.handle(request);
+
+        expect(validateSpy).toHaveBeenCalledWith(request);
     });
 
     it('should return 400 if Validation returns an error', async () => {

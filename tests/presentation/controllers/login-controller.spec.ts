@@ -8,14 +8,12 @@ import { throwError } from '@/tests/domain/mocks';
 import { Authentication } from '@/presentation/controllers/login/login/login-controller-protocols';
 import { LoginController } from '@/presentation/controllers/login/login/login-controller';
 import { MissingParamError } from '@/presentation/errors';
-import { HttpRequest, Validation } from '@/presentation/protocols';
+import { Validation } from '@/presentation/protocols';
 import { mockAuthentication, mockValidation } from '@/tests/presentation/mocks';
 
-const mockRequest = (): HttpRequest => ({
-    body: {
-        email: 'any_email@mail.com',
-        password: 'any_password'
-    }
+const mockRequest = (): LoginController.Request => ({
+    email: 'any_email@mail.com',
+    password: 'any_password'
 });
 
 type SutTypes = {
@@ -51,7 +49,9 @@ describe('Login Controller', () => {
         jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(
             Promise.resolve(null)
         );
+
         const httpResponse = await sut.handle(mockRequest());
+
         expect(httpResponse).toEqual(unauthorized());
     });
 
@@ -60,22 +60,28 @@ describe('Login Controller', () => {
         jest.spyOn(authenticationSpy, 'auth').mockImplementationOnce(
             throwError
         );
+
         const httpResponse = await sut.handle(mockRequest());
+
         expect(httpResponse).toEqual(serverError(new Error()));
     });
 
     it('should return 200 if valid credentials are provided', async () => {
         const { sut } = makeSut();
+
         const httpResponse = await sut.handle(mockRequest());
+
         expect(httpResponse).toEqual(ok({ accessToken: 'any_token' }));
     });
 
     it('should call Validation with correct value', async () => {
         const { sut, validationSpy } = makeSut();
         const validateSpy = jest.spyOn(validationSpy, 'validate');
-        const httpRequest = mockRequest();
-        await sut.handle(httpRequest);
-        expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
+
+        const request = mockRequest();
+        await sut.handle(request);
+
+        expect(validateSpy).toHaveBeenCalledWith(request);
     });
 
     it('should return 400 if Validation returns an error', async () => {

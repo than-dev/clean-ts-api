@@ -3,7 +3,6 @@ import {
     ok,
     serverError
 } from '@/presentation/helpers/http/http-helper';
-import { HttpRequest } from '@/presentation/protocols/http';
 import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id';
 import { SaveSurveyResult } from '@/domain/usecases/survey-result/save-survey-result';
 import { InvalidParamError } from '@/presentation/errors';
@@ -20,13 +19,9 @@ type SutTypes = {
     saveSurveyResultSpy: SaveSurveyResult;
 };
 
-const mockRequest = (): HttpRequest => ({
-    params: {
-        surveyId: 'any_survey_id'
-    },
-    body: {
-        answer: 'any_answer'
-    },
+const mockRequest = (): SaveSurveyResultController.Request => ({
+    surveyId: 'any_survey_id',
+    answer: 'any_answer',
     accountId: 'any_account_id'
 });
 
@@ -58,11 +53,11 @@ describe('SaveSurveyResult Controller', () => {
         const { sut, loadSurveyByIdSpy } = makeSut();
         const loadByIdSpy = jest.spyOn(loadSurveyByIdSpy, 'loadById');
 
-        const fakeRequest = mockRequest();
+        const request = mockRequest();
 
-        await sut.handle(fakeRequest);
+        await sut.handle(request);
 
-        expect(loadByIdSpy).toHaveBeenCalledWith(fakeRequest.params.surveyId);
+        expect(loadByIdSpy).toHaveBeenCalledWith(request.surveyId);
     });
 
     it('should return 403 if LoadSurveyById returns null', async () => {
@@ -93,12 +88,9 @@ describe('SaveSurveyResult Controller', () => {
         const { sut } = makeSut();
 
         const httpResponse = await sut.handle({
-            params: {
-                surveyId: 'any_survey_id'
-            },
-            body: {
-                answer: 'wrong_answer'
-            }
+            surveyId: 'any_survey_id',
+            answer: 'wrong_answer',
+            accountId: ''
         });
 
         expect(httpResponse).toEqual(
@@ -110,15 +102,15 @@ describe('SaveSurveyResult Controller', () => {
         const { sut, saveSurveyResultSpy } = makeSut();
         const loadByIdSpy = jest.spyOn(saveSurveyResultSpy, 'save');
 
-        const fakeRequest = mockRequest();
+        const request = mockRequest();
 
-        await sut.handle(fakeRequest);
+        await sut.handle(request);
 
         expect(loadByIdSpy).toHaveBeenCalledWith({
-            surveyId: fakeRequest.params.surveyId,
-            accountId: fakeRequest.accountId,
+            surveyId: request.surveyId,
+            accountId: request.accountId,
             date: new Date(),
-            answer: fakeRequest.body.answer
+            answer: request.answer
         });
     });
 
