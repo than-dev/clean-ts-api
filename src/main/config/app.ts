@@ -1,11 +1,11 @@
 import express from 'express';
-import { setupAppolloServer } from './apollo-server';
+import { setupApolloServer } from '@/main/graphql/apollo';
 import setupMiddlewares from './middlewares';
 import setupRoutes from './routes';
 
 const app = express();
 
-setupAppolloServer(app);
+setupApolloServer();
 setupMiddlewares(app);
 setupRoutes(app);
 
