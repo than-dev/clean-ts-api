@@ -19,6 +19,5 @@ export default gql`
         answer: String!
         count: Int!
         percent: Int!
-        isCurrentAccountAnswer: Boolean!
     }
 `;
