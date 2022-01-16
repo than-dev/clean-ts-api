@@ -4,7 +4,6 @@ import {
     serverError
 } from '@/presentation/helpers/http/http-helper';
 import { throwError } from '@/tests/domain/mocks';
-import { HttpRequest } from '@/presentation/protocols/http';
 import { AuthMiddleware } from '@/presentation/middlewares/auth-middleware';
 import { AccessDeniedError } from '@/presentation/errors/access-denied-error';
 import { LoadAccountByToken } from '@/presentation/middlewares/auth-middleware-protocols';
@@ -25,10 +24,8 @@ const makeSut = (role?: string): SutTypes => {
     };
 };
 
-const mockRequest = (): HttpRequest => ({
-    headers: {
-        'x-access-token': 'any_token'
-    }
+const mockRequest = (): AuthMiddleware.Request => ({
+    accessToken: 'any_token'
 });
 
 describe('Auth Middleware', () => {
